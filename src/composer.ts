@@ -1,27 +1,24 @@
-import { config, operations } from './configs/config00.js';
-import matrixSampler from './operations/samplers/matrixSampler.js';
-import channelIterator from './operations/samplers/channelIterator.js';
-import dotRenderer from './operations/renderers/dotRenderer.js';
+import p5 from 'p5';
+import { operations } from './configs/config00.js';
+import { Config } from './types.js';
 
-export default composer = () => {
+export default function composer(p: p5, config: Config, pixels: number[]) {
   operations.map((operation) => {
-    let sampler;
-    let renderer;
-    if ((operation.renderConfig.function = 'dotRenderer')) {
-        renderer = dotRenderer;
-    }
-    if ((operation.samplerConfig.function = 'matrixSampler')) {
-      sampler = (channel?: number) => (matrixSampler(
-        config.outputGridUnitX,
-        config.outputGridUnitY,
-        sampleRange,
-        channel,
-        pixels,
-        renderFunction));
-        
-      }
-      if (channelIterator) {
-        sampler = channelIterator(sampler())
-      }
+    console.log('hi', operation);
+    let buffer = operation.sampler(
+      config.resolutionX,
+      config.resolutionY,
+      pixels,
+      operation.samplerConfig
+    );
+    console.log(config.outputGridUnitX);
+
+    operation.renderer(
+      p,
+      config.outputGridUnitX,
+      config.outputGridUnitY,
+      buffer,
+      operation.rendererConfig
+    );
   });
-};
+}
