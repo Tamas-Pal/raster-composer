@@ -9,11 +9,9 @@ export default function dotRenderer(
   {
     colorF,
     shapeF,
-    transformF = undefined,
-    patternColorF = undefined,
-    patternF = undefined,
-    patternResolution = 8,
+    transformParams = undefined,
     channels = [true, true, true, false],
+    patternParams = undefined
   }: RendererConfig
 ) {
   p.blendMode(p.MULTIPLY);
@@ -24,7 +22,7 @@ export default function dotRenderer(
         //let channelNorm = pixel[i + 2] / 255;
         //let alphaNorm = pixel[5] / 255;
         //if (channelNorm < 0.9 && alphaNorm >= 0.1) {
-        
+
         p.fill(p.color(colorF(pixel, i + 2)));
         shapeF(
           p,
@@ -34,16 +32,18 @@ export default function dotRenderer(
           buffer.rasterSizeY,
           pixel,
           i + 2,
-          transformF
+          transformParams
         );
-        if (patternColorF && patternF) {
-          patternF(
+        if (patternParams) {
+          patternParams.patternF(
             p,
             outputGridUnitX,
             outputGridUnitY,
+            buffer.rasterSizeX,
+            buffer.rasterSizeY,
             pixel,
-            patternResolution,
-            i + 2
+            i + 2,
+            [patternParams.patternResolutionXY, patternParams.patternColorF]
           );
         }
         //}

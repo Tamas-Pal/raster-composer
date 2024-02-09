@@ -2,6 +2,7 @@ import hsl_Shift180_inverted_40 from '../../lib/attributeFunctions/colorFunction
 import justRed from '../../lib/attributeFunctions/colorFunctions/justRed';
 import brighterThan from '../../lib/attributeFunctions/conditionFunctions/brighterThan';
 import darkerThan from '../../lib/attributeFunctions/conditionFunctions/darkerThan';
+import noisePattern from '../../lib/attributeFunctions/patternFunctions/noisePattern';
 import simpleSample from '../../lib/attributeFunctions/samplerFunctions/simpleSample';
 import pixelRects from '../../lib/attributeFunctions/shapeFunctions/pixelRects';
 import rasterDots from '../../lib/attributeFunctions/shapeFunctions/rasterDots';
@@ -21,15 +22,14 @@ export const operation_whiteReplace = {
     conditionF: brighterThan,
     threshold: 223,
     samplerF: simpleSample,
+    samplerFParams: [],
   },
   renderer: pixelRenderer,
   rendererConfig: {
     colorF: justRed,
     shapeF: pixelRects,
-    transformF: undefined,
-    patternColorF: undefined,
-    patternF: undefined,
-    patternResolution: 8,
+    transformParams: undefined,
     channels: [true, false, false, false],
+    patternParams: undefined,
   },
 };

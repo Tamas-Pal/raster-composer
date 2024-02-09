@@ -23,7 +23,7 @@ export default function sketch(p: p5) {
     config.outputGridUnitX = p.width / config.resolutionX;
     config.outputGridUnitY = p.height / config.resolutionY;
 
-    p.background(255);
+    p.background(config.backgroundColor);
     composer(p, config, p.pixels);
   };
 

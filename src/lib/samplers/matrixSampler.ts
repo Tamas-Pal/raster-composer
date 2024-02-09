@@ -12,7 +12,8 @@ export default function matrixSampler(
     stepFY = (resolutionY, rasterSizeY) => rasterSizeY,
     conditionF = () => true,
     threshold,
-    samplerF
+    samplerF,
+    samplerFParams = [1]
   }: SamplerConfig
 ) {
   
@@ -57,7 +58,7 @@ export default function matrixSampler(
           ) {
 
             // find pixel's RGBA in pixels array for each matrix point
-            let index = samplerF(resolutionX, resolutionY, x, y);
+            let index = samplerF(resolutionX, resolutionY, x, y, samplerFParams);
             let pixel = pixels.slice(index, index + 4);
             // add intensity to existing
             outputColor = outputColor.map(

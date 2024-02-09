@@ -2,6 +2,7 @@ import p5 from 'p5';
 
 export type Config = {
   image: string;
+  backgroundColor: number[];
   outputMultiplier: number;
   resolutionX: number;
   resolutionY: number;
@@ -25,18 +26,23 @@ export type Buffer = {
 
 export type StepFunction = (resolution: number, rasterSize: number) => number;
 export type SamplerFunction = (
-    resolutionX: number,
+  resolutionX: number,
   resolutionY: number,
   x: number,
-  y: number
-  ) => number;
+  y: number,
+  samplerFParams: number[]
+) => number;
 export type ConditionFunction = (
   outputColor: BufferColor,
   threshold: number
 ) => boolean;
 
 export type ColorFunction = (pixel: Pixel, pixelIndex?: number) => string;
-export type TransformFunction = (p: p5, scale: number, pixel?: Pixel) => number;
+export type TransformFunction = (
+  p: p5,
+  transformScale: number,
+  pixel?: Pixel
+) => number;
 export type ShapeFunction = (
   p: p5,
   outputGridUnitX: number,
@@ -44,16 +50,18 @@ export type ShapeFunction = (
   rasterSizeX: number,
   rasterSizeY: number,
   pixel: Pixel,
-  pixelIndex?: number,
-  transformF?: TransformFunction
+  pixelIndex: number | undefined,
+  transformParams: TransformParams | undefined
 ) => void;
 export type PatternFunction = (
   p: p5,
   outputGridUnitX: number,
   outputGridUnitY: number,
+  rasterSizeX: number,
+  rasterSizeY: number,
   pixel: Pixel,
-  patternResolution: number,
-  channelIndex: number
+  channelIndex: number,
+  patternParams: [patternResolutionXY: number[], patternColorF: ColorFunction]
 ) => void;
 
 export type SamplerConfig = {
@@ -65,6 +73,7 @@ export type SamplerConfig = {
   conditionF: ConditionFunction | undefined;
   threshold: number;
   samplerF: SamplerFunction;
+  samplerFParams: number[] | undefined;
 };
 
 export type Sampler = (
@@ -74,14 +83,21 @@ export type Sampler = (
   samplerConfig: SamplerConfig
 ) => Buffer;
 
+export type TransformParams = {
+  transformF: TransformFunction;
+  transformScaleXY: number[];
+};
+export type PatternParams = {
+  patternF: PatternFunction;
+  patternResolutionXY: number[];
+  patternColorF: ColorFunction;
+};
 export type RendererConfig = {
   colorF: ColorFunction;
   shapeF: ShapeFunction;
-  transformF: TransformFunction | undefined;
-  patternColorF: ColorFunction | undefined;
-  patternF: PatternFunction | undefined;
-  patternResolution: number | undefined;
+  transformParams: TransformParams | undefined;
   channels: boolean[] | undefined;
+  patternParams: PatternParams | undefined;
 };
 
 export type Renderer = (

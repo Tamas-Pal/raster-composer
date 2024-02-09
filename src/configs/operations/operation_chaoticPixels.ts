@@ -21,18 +21,17 @@ export const operation_chaoticPixels = {
     sampleRadius: 0,
     stepFX: undefined,
     stepFY: undefined,
-    conditionF: darkerThan,
-    threshold: 32,
+    conditionF: brighterThan,
+    threshold: 127,
     samplerF: chaoticXSample,
+    samplerFParams: []
   },
   renderer: pixelRenderer,
   rendererConfig: {
     colorF: rgb,
     shapeF: pixelRects,
-    transformF: undefined,
-    patternColorF: undefined,
-    patternF: undefined,
-    patternResolution: 8,
+    transformParams: undefined,
     channels: [true, false, false, false],
+    patternParams: undefined
   },
 };

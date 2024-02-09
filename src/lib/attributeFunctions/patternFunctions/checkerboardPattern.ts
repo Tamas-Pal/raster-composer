@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { ColorFunction, Pixel } from '../../../types';
 
-export default function noisePattern(
+export default function checkerboardPattern(
   p: p5,
   outputGridUnitX: number,
   outputGridUnitY: number,
@@ -26,11 +26,8 @@ export default function noisePattern(
           rasterSizeY / 2 +
           (y / patternResolutionXY[1]) * rasterSizeY) *
         outputGridUnitY;
-      p.noiseDetail(12, 0.5);
-      let noiseVal = p.noise((xPos / p.width) * 20.1, (yPos / p.height) * 20.1);
-      //if (x === 0 && y === 0) console.log(outputGridUnitX / patternResolutionXY[], yPos);
 
-      if (noiseVal > 0.5) {
+      if ((x + y) % 2 === 0) {
         p.fill(p.color(patternColorF(pixel, channelIndex)));
         //console.log(patternColorF(pixel, channelIndex));
         p.rect(

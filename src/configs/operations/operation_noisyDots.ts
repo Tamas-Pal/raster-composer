@@ -17,15 +17,14 @@ export const operation_noisyDots = {
     conditionF: darkerThan,
     threshold: 223,
     samplerF: simpleSample,
+    samplerFParams: [],
   },
   renderer: dotRenderer,
   rendererConfig: {
     colorF: hsl_Shift180_inverted_40,
     shapeF: rasterDots,
-    transformF: translateRandom,
-    patternColorF: undefined,
-    patternF: undefined,
-    patternResolution: 8,
+    transformParams: { transformF: translateRandom, transformScaleXY: [4, 4] },
     channels: [true, true, true, false],
+    patternParams: undefined,
   },
 };

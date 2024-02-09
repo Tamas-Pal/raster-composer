@@ -16,10 +16,16 @@ import lessOpaqueThan from '../lib/attributeFunctions/conditionFunctions/lessOpa
 import justRed from '../lib/attributeFunctions/colorFunctions/justRed';
 import repeatSample from '../lib/attributeFunctions/samplerFunctions/repeatSample';
 import { operation_whiteReplace } from './operations/operation_whiteReplace';
+import { operation_chaoticPixels } from './operations/operation_chaoticPixels';
+import noisePattern from '../lib/attributeFunctions/patternFunctions/noisePattern';
+import hsl_Shift120_100_50 from '../lib/attributeFunctions/colorFunctions/hsl_Shift120_100_50';
+import transparent from '../lib/attributeFunctions/colorFunctions/transparent';
+import checkerboardPattern from '../lib/attributeFunctions/patternFunctions/checkerboardPattern';
 
 export let config: Config = {
-  image: 'images/assets/' + '00.png',
-  outputMultiplier: 1.5,
+  image: 'images/assets/' + '001.png',
+  backgroundColor: [191, 0, 63],
+  outputMultiplier: 2,
   resolutionX: 0,
   resolutionY: 0,
   outputGridUnitX: 0,
@@ -27,28 +33,63 @@ export let config: Config = {
 };
 
 export let operations: Operations = [
-  //operation_noisyDots,
+  operation_noisyDots,
+
+  //operation_chaoticPixels,
+  /*
   {
     sampler: matrixSampler,
     samplerConfig: {
-      rasterSizeX: 8,
-      rasterSizeY: 1,
+      rasterSizeX: 2,
+      rasterSizeY: 2,
       sampleRadius: 0,
       stepFX: undefined,
       stepFY: undefined,
       conditionF: darkerThan,
-      threshold: 32,
+      threshold: 47,
       samplerF: repeatSample,
+      samplerFParams: [2, 2],
     },
     renderer: pixelRenderer,
     rendererConfig: {
       colorF: rgb,
       shapeF: pixelRects,
       transformF: undefined,
-      patternColorF: undefined,
-      patternF: undefined,
-      patternResolution: 8,
       channels: [true, false, false, false],
+      patternParams: undefined
+    },
+  },
+  */
+  {
+    sampler: matrixSampler,
+    samplerConfig: {
+      rasterSizeX: 64,
+      rasterSizeY: 64,
+      sampleRadius: 0,
+      stepFX: undefined,
+      stepFY: undefined,
+      conditionF: brighterThan,
+      threshold: 127,
+      samplerF: simpleSample,
+      samplerFParams: [],
+    },
+    renderer: pixelRenderer,
+    rendererConfig: {
+      colorF: justRed,
+      shapeF: pixelRects,
+      transformParams: undefined,
+      /*
+      {
+        transformF: translateRandom,
+        transformScaleXY: [32, 8],
+      },
+      */
+      channels: [true, false, false, false],
+      patternParams: {
+        patternF: noisePattern,
+        patternResolutionXY: [8, 8],
+        patternColorF: hsl_Shift180_inverted_40,
+      },
     },
   },
   //operation_whiteReplace,
