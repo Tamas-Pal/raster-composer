@@ -1,6 +1,7 @@
 import p5 from 'p5';
 
 export type Config = {
+  image: string;
   outputMultiplier: number;
   resolutionX: number;
   resolutionY: number;
@@ -17,24 +18,31 @@ export type Pixels = Pixel[];
 export type Buffer = {
   resolutionY: number;
   resolutionX: number;
-  inputGridUnitX: number;
-  inputGridUnitY: number;
-  rasterSize: number;
+  rasterSizeX: number;
+  rasterSizeY: number;
   pixels: Pixels;
 };
 
-export type StepFunction = (
-  resolution: number,
-  inputGridUnit: number,
-  rasterSize: number
-) => number;
+export type StepFunction = (resolution: number, rasterSize: number) => number;
+export type SamplerFunction = (
+    resolutionX: number,
+  resolutionY: number,
+  x: number,
+  y: number
+  ) => number;
+export type ConditionFunction = (
+  outputColor: BufferColor,
+  threshold: number
+) => boolean;
+
 export type ColorFunction = (pixel: Pixel, pixelIndex?: number) => string;
 export type TransformFunction = (p: p5, scale: number, pixel?: Pixel) => number;
 export type ShapeFunction = (
   p: p5,
   outputGridUnitX: number,
   outputGridUnitY: number,
-  rasterSize: number,
+  rasterSizeX: number,
+  rasterSizeY: number,
   pixel: Pixel,
   pixelIndex?: number,
   transformF?: TransformFunction
@@ -49,12 +57,14 @@ export type PatternFunction = (
 ) => void;
 
 export type SamplerConfig = {
-  inputGridUnitX: number;
-  inputGridUnitY: number;
-  rasterSize: number;
-  sampleRange: number;
+  rasterSizeX: number;
+  rasterSizeY: number;
+  sampleRadius: number;
   stepFX: StepFunction | undefined;
   stepFY: StepFunction | undefined;
+  conditionF: ConditionFunction | undefined;
+  threshold: number;
+  samplerF: SamplerFunction;
 };
 
 export type Sampler = (

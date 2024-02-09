@@ -8,7 +8,7 @@ let img: Image;
 export default function sketch(p: p5) {
   p.preload = () => {
     //img = loadImage('assets/StateCraft01.png');
-    img = p.loadImage('images/assets/' + '00.png');
+    img = p.loadImage(config.image);
   };
 
   p.setup = () => {

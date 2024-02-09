@@ -5,82 +5,84 @@ export default function matrixSampler(
   resolutionY: number,
   pixels: number[],
   {
-    inputGridUnitX,
-    inputGridUnitY,
-    rasterSize,
-    sampleRange,
-    stepFX = undefined,
-    stepFY = undefined,
+    rasterSizeX,
+    rasterSizeY,
+    sampleRadius,  
+    stepFX = (resolutionX, rasterSizeX) => rasterSizeX,
+    stepFY = (resolutionY, rasterSizeY) => rasterSizeY,
+    conditionF = () => true,
+    threshold,
+    samplerF
   }: SamplerConfig
 ) {
-  if (stepFX === undefined) {
-    stepFX = (resolutionX, inputGridUnitX, rasterSize) => rasterSize;
-  }
-  if (stepFY === undefined) {
-    stepFY = (resolutionY, inputGridUnitY, rasterSize) => rasterSize;
-  }
+  
   let buffer = {
     resolutionY: resolutionX,
     resolutionX: resolutionY,
-    inputGridUnitX: inputGridUnitX,
-    inputGridUnitY: inputGridUnitY,
-    rasterSize: rasterSize,
+    rasterSizeX: rasterSizeX,
+    rasterSizeY: rasterSizeY,
     pixels: [] as Pixels,
   };
 
   for (
     let y = 0;
     y < resolutionY;
-    y += stepFY(resolutionY, inputGridUnitY, rasterSize)
+    y += stepFY(resolutionY, rasterSizeY)
   ) {
     for (
       let x = 0;
       x < resolutionX;
-      x += stepFX(resolutionX, inputGridUnitX, rasterSize)
+      x += stepFX(resolutionX, rasterSizeX)
     ) {
-      //console.log(x, y);
-
-      let matrixSize = sampleRange * 2 + 1;
-      let outputCol = [0, 0, 0, 0] as BufferColor;
+      // define matrix for given radius to find average intensity for each color channel
+      let matrixSize = sampleRadius * 2 + 1;
+      let outputColor = [0, 0, 0, 0] as BufferColor;
       for (
-        let matrixX = 0 - sampleRange;
-        matrixX < matrixSize - sampleRange;
+        let matrixX = 0 - sampleRadius;
+        matrixX < matrixSize - sampleRadius;
         matrixX++
       ) {
         for (
-          let matrixY = 0 - sampleRange;
-          matrixY < matrixSize - sampleRange;
+          let matrixY = 0 - sampleRadius;
+          matrixY < matrixSize - sampleRadius;
           matrixY++
         ) {
-          // if not image edge
+
+          // if pixel is not on image edge
           if (
             x + matrixX >= 0 &&
             y + matrixY >= 0 &&
             x + matrixX < resolutionX &&
             y + matrixY < resolutionY
           ) {
-            //let index = (x + resolutionX * 4 * y * rasterSize) * 4 * rasterSize;
-            let index = (x * 2 + y * resolutionX * 4) * 4;
+
+            // find pixel's RGBA in pixels array for each matrix point
+            let index = samplerF(resolutionX, resolutionY, x, y);
             let pixel = pixels.slice(index, index + 4);
-            outputCol = outputCol.map(
+            // add intensity to existing
+            outputColor = outputColor.map(
               (channel, index) => channel + pixel[index]
             ) as BufferColor;
-            // if image edge go with full intensity
+
+            // if pixel is on image edge return full intensity
             // and no alpha
           } else {
-            outputCol = outputCol.map((channel, index) =>
+            outputColor = outputColor.map((channel, index) =>
               index < 3 ? channel + 1 : channel
             ) as BufferColor;
           }
         }
       }
-      outputCol = outputCol.map(
+
+      // divide the channel color with matrix size
+      outputColor = outputColor.map(
         (channel) => channel / (matrixSize * matrixSize)
       ) as BufferColor;
-      buffer.pixels.push([x, y, ...outputCol]);
+      if (conditionF(outputColor, threshold)) {
+        buffer.pixels.push([x, y, ...outputColor]);
+      }
     }
   }
-  // console.log('matrixSampler', buffer);
 
   return buffer;
 }
