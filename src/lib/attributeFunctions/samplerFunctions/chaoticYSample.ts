@@ -1,9 +1,9 @@
-export default function chaoticXSample(
+export default function chaoticYSample(
   resolutionX: number,
   resolutionY: number,
   x: number,
   y: number
 ) {
-  let simpleSample = (x * 2 * y + y * resolutionX * 4) * 4;
+  let simpleSample = x * 4 + y * resolutionX * 2 * -x;
   return simpleSample % (resolutionX * resolutionY * 4);
 }

@@ -6,6 +6,6 @@ export default function repeatSample(
   samplerFParams = [1, 1]
 ) {
   let simpleSample =
-    (x * 2 * samplerFParams[0] + y * resolutionX * 4 * samplerFParams[1]) * 4;
-  return simpleSample % (resolutionX * resolutionY * 16);
+    x * 4 * samplerFParams[0] + y * resolutionX * 4 * samplerFParams[1];
+  return simpleSample % (resolutionX * resolutionY * 4);
 }

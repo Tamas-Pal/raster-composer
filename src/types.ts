@@ -1,7 +1,7 @@
 import p5 from 'p5';
 
 export type Config = {
-  image: string;
+  images: string[];
   backgroundColor: number[];
   outputMultiplier: number;
   resolutionX: number;
@@ -24,7 +24,6 @@ export type Buffer = {
   pixels: Pixels;
 };
 
-export type StepFunction = (resolution: number, rasterSize: number) => number;
 export type SamplerFunction = (
   resolutionX: number,
   resolutionY: number,
@@ -34,7 +33,7 @@ export type SamplerFunction = (
 ) => number;
 export type ConditionFunction = (
   outputColor: BufferColor,
-  threshold: number
+  threshold: number[]
 ) => boolean;
 
 export type ColorFunction = (pixel: Pixel, pixelIndex?: number) => string;
@@ -65,13 +64,12 @@ export type PatternFunction = (
 ) => void;
 
 export type SamplerConfig = {
+  imageIndex: number;
   rasterSizeX: number;
   rasterSizeY: number;
   sampleRadius: number;
-  stepFX: StepFunction | undefined;
-  stepFY: StepFunction | undefined;
   conditionF: ConditionFunction | undefined;
-  threshold: number;
+  threshold: number[];
   samplerF: SamplerFunction;
   samplerFParams: number[] | undefined;
 };
@@ -92,12 +90,17 @@ export type PatternParams = {
   patternResolutionXY: number[];
   patternColorF: ColorFunction;
 };
+export type MetaballParams = {
+  metaballRasterSizeXY: number[];
+  evaluationDistanceRatio: number;
+};
 export type RendererConfig = {
   colorF: ColorFunction;
   shapeF: ShapeFunction;
   transformParams: TransformParams | undefined;
   channels: boolean[] | undefined;
   patternParams: PatternParams | undefined;
+  metaballParams: MetaballParams | undefined;
 };
 
 export type Renderer = (

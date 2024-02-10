@@ -9,13 +9,13 @@ import matrixSampler from '../../lib/samplers/matrixSampler';
 export const operation_noisyDots = {
   sampler: matrixSampler,
   samplerConfig: {
-    rasterSizeX: 4,
-    rasterSizeY: 4,
+    rasterSizeX: 8,
+    rasterSizeY: 8,
     sampleRadius: 0,
     stepFX: undefined,
     stepFY: undefined,
     conditionF: darkerThan,
-    threshold: 223,
+    threshold: [223],
     samplerF: simpleSample,
     samplerFParams: [],
   },
@@ -26,5 +26,6 @@ export const operation_noisyDots = {
     transformParams: { transformF: translateRandom, transformScaleXY: [4, 4] },
     channels: [true, true, true, false],
     patternParams: undefined,
+    metaballParams: undefined,
   },
 };

@@ -4,6 +4,7 @@ import rgb from '../../lib/attributeFunctions/colorFunctions/rgb';
 import brighterThan from '../../lib/attributeFunctions/conditionFunctions/brighterThan';
 import darkerThan from '../../lib/attributeFunctions/conditionFunctions/darkerThan';
 import chaoticXSample from '../../lib/attributeFunctions/samplerFunctions/chaoticXSample';
+import chaoticYSample from '../../lib/attributeFunctions/samplerFunctions/chaoticYSample';
 import repeatSample from '../../lib/attributeFunctions/samplerFunctions/repeatSample';
 import simpleSample from '../../lib/attributeFunctions/samplerFunctions/simpleSample';
 import pixelRects from '../../lib/attributeFunctions/shapeFunctions/pixelRects';
@@ -13,18 +14,18 @@ import dotRenderer from '../../lib/renderers/dotRenderer';
 import pixelRenderer from '../../lib/renderers/pixelRenderer';
 import matrixSampler from '../../lib/samplers/matrixSampler';
 
-export const operation_chaoticPixels = {
+export const operation_chaoticYPixels = {
   sampler: matrixSampler,
   samplerConfig: {
-    rasterSizeX: 8,
+    rasterSizeX: 16,
     rasterSizeY: 1,
     sampleRadius: 0,
     stepFX: undefined,
     stepFY: undefined,
     conditionF: brighterThan,
-    threshold: 127,
-    samplerF: chaoticXSample,
-    samplerFParams: []
+    threshold: [127],
+    samplerF: chaoticYSample,
+    samplerFParams: [],
   },
   renderer: pixelRenderer,
   rendererConfig: {
@@ -32,6 +33,7 @@ export const operation_chaoticPixels = {
     shapeF: pixelRects,
     transformParams: undefined,
     channels: [true, false, false, false],
-    patternParams: undefined
+    patternParams: undefined,
+    metaballParams: undefined,
   },
 };

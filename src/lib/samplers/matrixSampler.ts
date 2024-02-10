@@ -8,8 +8,6 @@ export default function matrixSampler(
     rasterSizeX,
     rasterSizeY,
     sampleRadius,  
-    stepFX = (resolutionX, rasterSizeX) => rasterSizeX,
-    stepFY = (resolutionY, rasterSizeY) => rasterSizeY,
     conditionF = () => true,
     threshold,
     samplerF,
@@ -18,8 +16,8 @@ export default function matrixSampler(
 ) {
   
   let buffer = {
-    resolutionY: resolutionX,
-    resolutionX: resolutionY,
+    resolutionX: resolutionX,
+    resolutionY: resolutionY,
     rasterSizeX: rasterSizeX,
     rasterSizeY: rasterSizeY,
     pixels: [] as Pixels,
@@ -28,12 +26,12 @@ export default function matrixSampler(
   for (
     let y = 0;
     y < resolutionY;
-    y += stepFY(resolutionY, rasterSizeY)
+    y += rasterSizeY
   ) {
     for (
       let x = 0;
       x < resolutionX;
-      x += stepFX(resolutionX, rasterSizeX)
+      x += rasterSizeX
     ) {
       // define matrix for given radius to find average intensity for each color channel
       let matrixSize = sampleRadius * 2 + 1;
