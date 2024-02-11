@@ -26,7 +26,7 @@ export const operation_whiteReplace = {
   },
   renderer: pixelRenderer,
   rendererConfig: {
-    colorF: hsl_Shift180_inverted_40,
+    colorParams: { colorF: hsl_Shift180_inverted_40, inputColor: undefined },
     shapeF: pixelRects,
     transformParams: undefined,
     channels: [true, false, false, false],

@@ -8,7 +8,7 @@ export default function metaballRenderer(
   outputGridUnitY: number,
   buffer: Buffer,
   {
-    colorF,
+    colorParams,
     shapeF,
     transformParams = undefined,
     channels = [true, false, false, false],
@@ -88,7 +88,7 @@ export default function metaballRenderer(
             255,
           ] as Pixel;
 
-          p.fill(p.color(colorF(pixel, i + 2)));
+          p.fill(p.color(colorParams.colorF(pixel, i + 2, colorParams.inputColor)));
 
           shapeF(
             p,

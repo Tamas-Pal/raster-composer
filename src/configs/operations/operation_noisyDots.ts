@@ -21,7 +21,7 @@ export const operation_noisyDots = {
   },
   renderer: dotRenderer,
   rendererConfig: {
-    colorF: hsl_Shift180_inverted_40,
+    colorParams: { colorF: hsl_Shift180_inverted_40, inputColor: undefined },
     shapeF: rasterDots,
     transformParams: { transformF: translateRandom, transformScaleXY: [4, 4] },
     channels: [true, true, true, false],

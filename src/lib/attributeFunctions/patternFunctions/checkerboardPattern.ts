@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { ColorFunction, Pixel } from '../../../types';
+import { ColorFunction, PatternParams, Pixel } from '../../../types';
 
 export default function checkerboardPattern(
   p: p5,
@@ -9,10 +9,13 @@ export default function checkerboardPattern(
   rasterSizeY: number,
   pixel: Pixel,
   channelIndex: number,
-  patternParams: [patternResolutionXY: number[], patternColorF: ColorFunction]
+  patternResolutionXY = [1, 1],
+  patternColor: {
+    patternColorF: ColorFunction;
+    inputColor: number[] | undefined;
+  }
 ) {
-  const [patternResolutionXY, patternColorF] = patternParams;
-  //p.blendMode(p.REPLACE);
+  p.blendMode(p.BLEND);
   p.noStroke();
   for (let y = 0; y < patternResolutionXY[1]; y++) {
     for (let x = 0; x < patternResolutionXY[0]; x++) {
@@ -28,8 +31,15 @@ export default function checkerboardPattern(
         outputGridUnitY;
 
       if ((x + y) % 2 === 0) {
-        p.fill(p.color(patternColorF(pixel, channelIndex)));
-        //console.log(patternColorF(pixel, channelIndex));
+        p.fill(
+          p.color(
+            patternColor.patternColorF(
+              pixel,
+              channelIndex,
+              patternColor.inputColor
+            )
+          )
+        );
         p.rect(
           xPos,
           yPos,

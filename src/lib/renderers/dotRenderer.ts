@@ -7,11 +7,11 @@ export default function dotRenderer(
   outputGridUnitY: number,
   buffer: Buffer,
   {
-    colorF,
+    colorParams,
     shapeF,
     transformParams = undefined,
     channels = [true, true, true, false],
-    patternParams = undefined
+    patternParams = undefined,
   }: RendererConfig
 ) {
   p.blendMode(p.MULTIPLY);
@@ -23,7 +23,9 @@ export default function dotRenderer(
         //let alphaNorm = pixel[5] / 255;
         //if (channelNorm < 0.9 && alphaNorm >= 0.1) {
 
-        p.fill(p.color(colorF(pixel, i + 2)));
+        p.fill(
+          p.color(colorParams.colorF(pixel, i + 2, colorParams.inputColor))
+        );
         shapeF(
           p,
           outputGridUnitX,
@@ -43,7 +45,8 @@ export default function dotRenderer(
             buffer.rasterSizeY,
             pixel,
             i + 2,
-            [patternParams.patternResolutionXY, patternParams.patternColorF]
+            patternParams.patternResolutionXY,
+            patternParams.patternColor
           );
         }
         //}

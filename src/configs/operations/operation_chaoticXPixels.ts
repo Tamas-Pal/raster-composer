@@ -28,7 +28,7 @@ export const operation_chaoticXPixels = {
   },
   renderer: pixelRenderer,
   rendererConfig: {
-    colorF: rgb,
+    colorParams: { colorF: rgb, inputColor: undefined },
     shapeF: pixelRects,
     transformParams: undefined,
     channels: [true, false, false, false],

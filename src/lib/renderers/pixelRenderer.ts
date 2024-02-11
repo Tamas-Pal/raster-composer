@@ -7,7 +7,7 @@ export default function pixelRenderer(
   outputGridUnitY: number,
   buffer: Buffer,
   {
-    colorF,
+    colorParams,
     shapeF,
     transformParams = undefined,
     channels = [true, true, true, false],
@@ -19,7 +19,7 @@ export default function pixelRenderer(
   buffer.pixels.map((pixel) => {
     for (let i = 0; i < channels.length; i++) {
       if (channels[i]) {
-        p.fill(p.color(colorF(pixel, i + 2)));
+        p.fill(p.color(colorParams.colorF(pixel, i + 2, colorParams.inputColor)));
         shapeF(
           p,
           outputGridUnitX,
@@ -39,7 +39,8 @@ export default function pixelRenderer(
             buffer.rasterSizeY,
             pixel,
             i + 2,
-            [patternParams.patternResolutionXY, patternParams.patternColorF]
+            patternParams.patternResolutionXY,
+            patternParams.patternColor
           );
         }
       }

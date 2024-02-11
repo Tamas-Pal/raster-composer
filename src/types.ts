@@ -36,7 +36,11 @@ export type ConditionFunction = (
   threshold: number[]
 ) => boolean;
 
-export type ColorFunction = (pixel: Pixel, pixelIndex?: number) => string;
+export type ColorFunction = (
+  pixel: Pixel,
+  pixelIndex: number | undefined,
+  inputColor: number[] | undefined
+) => string;
 export type TransformFunction = (
   p: p5,
   transformScale: number,
@@ -60,7 +64,11 @@ export type PatternFunction = (
   rasterSizeY: number,
   pixel: Pixel,
   channelIndex: number,
-  patternParams: [patternResolutionXY: number[], patternColorF: ColorFunction]
+  patternResolutionXY: number[],
+  patternColor: {
+    patternColorF: ColorFunction;
+    inputColor: number[] | undefined;
+  }
 ) => void;
 
 export type SamplerConfig = {
@@ -88,14 +96,17 @@ export type TransformParams = {
 export type PatternParams = {
   patternF: PatternFunction;
   patternResolutionXY: number[];
-  patternColorF: ColorFunction;
+  patternColor: {
+    patternColorF: ColorFunction;
+    inputColor: number[] | undefined;
+  };
 };
 export type MetaballParams = {
   metaballRasterSizeXY: number[];
   evaluationDistanceRatio: number;
 };
 export type RendererConfig = {
-  colorF: ColorFunction;
+  colorParams: { colorF: ColorFunction; inputColor: number[] | undefined };
   shapeF: ShapeFunction;
   transformParams: TransformParams | undefined;
   channels: boolean[] | undefined;
