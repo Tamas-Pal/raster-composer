@@ -17,7 +17,6 @@ export default function Sketch({
   let img1: Image;
 
   const outputImage = (p: p5) => {
-    //console.log(config);
     if (config.images[0]) {
       p.preload = () => {
         img0 = p.loadImage(config.images[0]);
@@ -37,7 +36,6 @@ export default function Sketch({
         config.outputGridUnitX = p.width / config.resolutionX;
         config.outputGridUnitY = p.height / config.resolutionY;
 
-        // console.log(config.resolutionX, config.resolutionY);
         const img0GFX = p.createGraphics(
           config.resolutionX,
           config.resolutionY

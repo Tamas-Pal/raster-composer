@@ -14,7 +14,7 @@ export const config: Config = {
   images: [
     '',
   ],
-  outputMultiplier: 0.5,
+  outputMultiplier: 1,
   resolutionX: 0,
   resolutionY: 0,
   outputGridUnitX: 0,

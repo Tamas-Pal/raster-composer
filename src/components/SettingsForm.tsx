@@ -4,7 +4,15 @@ import { loadLib, Lib } from '../utils/loadLib';
 import SamplerForm from './settingsFormComponents/SamplerForm';
 import RendererForm from './settingsFormComponents/RendererForm';
 
-export function SettingsForm({ preset }: { preset: Preset }) {
+export function SettingsForm({
+  preset,
+  handleNewLayer,
+  handleDeleteLayer,
+}: {
+  preset: Preset;
+  handleNewLayer: React.MouseEventHandler;
+  handleDeleteLayer: React.MouseEventHandler;
+}) {
   const [lib, setLib] = useState(null as Lib);
   useEffect(() => {
     const importLib = async () => {
@@ -13,19 +21,25 @@ export function SettingsForm({ preset }: { preset: Preset }) {
     };
     importLib();
   }, []);
-  const formElements = preset.operations.map(
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    console.log(e.currentTarget, formData);
+  };
+
+  const formOperations = preset.operations.map(
     (operation: Operation, index: number) => {
-      console.log(lib);
+      console.log('preset', preset);
+
       return (
         <Fragment key={index}>
           <h3>{`Layer_${index + 1}`}</h3>
-          <SamplerForm
-            lib={lib}
-            operation={operation}
-            //conditionFunctions={lib!.attributeFunctions.conditionFunctions}
-            //samplerFunctions={lib!.attributeFunctions.samplerFunctions}
-          />
-          <RendererForm lib={lib} operation={operation} />
+          <button type='button' id={`delete-layer-${index}`} onClick={handleDeleteLayer}>
+            X
+          </button>
+          <SamplerForm lib={lib} />
+          <RendererForm lib={lib} />
         </Fragment>
       );
     }
@@ -34,9 +48,10 @@ export function SettingsForm({ preset }: { preset: Preset }) {
   return (
     <>
       <h2>Settings</h2>
-      <form>
+      <form id='form' onSubmit={onSubmit}>
         <label>
-          <h4>Background Color</h4>R{' '}
+          <h4>Background Color</h4>
+          <span className='field-label'>R</span>
           <input
             className='number-input'
             type='number'
@@ -47,7 +62,7 @@ export function SettingsForm({ preset }: { preset: Preset }) {
             defaultValue='255'
             required
           />
-          G{' '}
+          <span className='field-label'>G</span>
           <input
             className='number-input'
             type='number'
@@ -58,7 +73,7 @@ export function SettingsForm({ preset }: { preset: Preset }) {
             defaultValue='0'
             required
           />
-          B{' '}
+          <span className='field-label'>B</span>
           <input
             className='number-input'
             type='number'
@@ -69,7 +84,7 @@ export function SettingsForm({ preset }: { preset: Preset }) {
             defaultValue='0'
             required
           />
-          A{' '}
+          <span className='field-label'>A</span>
           <input
             className='number-input'
             type='number'
@@ -81,10 +96,13 @@ export function SettingsForm({ preset }: { preset: Preset }) {
             required
           />
         </label>
-        {formElements}
-      </form>
-      <button>Add Layer</button>
+        {formOperations}
 
+        <button type='button' onClick={handleNewLayer}>
+          Add Layer
+        </button>
+        <button type='submit'>Update</button>
+      </form>
     </>
   );
 }

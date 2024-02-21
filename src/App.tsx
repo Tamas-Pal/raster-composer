@@ -1,23 +1,24 @@
 import { useState } from 'react';
+import { formHandlers } from './handlers/formHandlers';
 import './App.css';
 import { Config, Preset } from './p5/types';
 import {
   config as defaultConfig,
   preset as defaultPreset,
-} from './p5/configs/config02';
+} from './p5/configs/config-default';
 import Sketch from './components/Sketch';
 import { SettingsForm } from './components/SettingsForm';
 
 function App() {
-  const [srcImg, setSrcImg] = useState('');
   const [config, setConfig] = useState(defaultConfig as Config);
   const [preset, setPreset] = useState(defaultPreset as Preset);
+const {handleNewLayer, handleDeleteLayer} = formHandlers;
+  
 
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     let file: File;
     if (event.target.files != null) {
       file = event.target.files[0];
-      setSrcImg(URL.createObjectURL(file));
       setConfig((prevState) => ({
         ...prevState,
         images: [URL.createObjectURL(file) as string, prevState.images[1]],
@@ -76,7 +77,9 @@ function App() {
         <div>
           <input type='file' accept='image/*' onChange={handleImageUpload} />
         </div>
-        <div className='display'>{srcImg && <img src={srcImg} />}</div>
+        <div className='display'>
+          {config.images[0] && <img src={config.images[0]} />}
+        </div>
       </section>
       <section className='preset'>
         <h2>{'Load a Preset'}</h2>
@@ -85,12 +88,16 @@ function App() {
         </div>
         <div className='display'>
           {/* {preset && <p>{JSON.stringify(preset)}</p>} */}
-          <SettingsForm preset={preset} />
+          <SettingsForm
+            preset={preset}
+            handleNewLayer={() => handleNewLayer(defaultPreset, setPreset)}
+            handleDeleteLayer={(e) => handleDeleteLayer(e, setPreset)}
+          />
         </div>
       </section>
       <section className='output-image'>
         <Sketch config={config} preset={preset} />
-        <button>Update</button>
+        {/* <button>Update</button> */}
       </section>
     </>
   );
