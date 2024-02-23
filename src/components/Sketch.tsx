@@ -14,6 +14,7 @@ export default function Sketch({
 
   let img0: Image;
   let img1: Image;
+  const outputWidth = 1024
 
   const outputImage = (p: p5) => {
     if (config.images[0]) {
@@ -25,9 +26,9 @@ export default function Sketch({
       p.setup = () => {
         const aspectRatio = img0.width / img0.height;
         //config.resolutionX = img0.width * config.outputMultiplier;
-        config.resolutionX = 512;
+        config.resolutionX = outputWidth;
         //config.resolutionY = img0.height * config.outputMultiplier;
-        config.resolutionY = 512 / aspectRatio;
+        config.resolutionY = outputWidth / aspectRatio;
         const imgGFXArray = []
 
         p.createCanvas(config.resolutionX, config.resolutionY);

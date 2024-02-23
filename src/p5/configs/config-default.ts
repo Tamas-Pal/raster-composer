@@ -10,7 +10,7 @@ import pixelRects from '../lib/attributeFunctions/shapeFunctions/pixelRects';
 
 import rgb from '../lib/attributeFunctions/colorFunctions/rgb';
 
-export const config: Config = {
+export const defaultConfig: Config = {
   images: [
     '',
   ],
@@ -21,7 +21,7 @@ export const config: Config = {
   outputGridUnitY: 0,
 };
 
-export const preset = {
+export const defaultPreset = {
   backgroundColor: [0, 0, 0, 0],
   operations: [
     {

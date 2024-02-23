@@ -1,31 +1,52 @@
 import { useState } from 'react';
 import './App.css';
 import { Config, Preset } from './p5/types';
-import {
-  config as defaultConfig,
-  preset as defaultPreset,
-} from './p5/configs/config-default';
+import { defaultConfig } from './p5/configs/config-default';
 import Sketch from './components/Sketch';
 import { SettingsForm } from './components/SettingsForm';
+import brightnessRange from './p5/lib/attributeFunctions/conditionFunctions/brightnessRange';
+import basicSample from './p5/lib/attributeFunctions/samplerFunctions/basicSample';
+import rgb from './p5/lib/attributeFunctions/colorFunctions/rgb';
+import pixelRenderer from './p5/lib/renderers/pixelRenderer';
+import pixelRects from './p5/lib/attributeFunctions/shapeFunctions/pixelRects';
+import { handleDownload, handleImageUpload, handlePresetUpload } from './handlers/formHandlers';
 
 function App() {
   const [config, setConfig] = useState(defaultConfig as Config);
-  const [preset, setPreset] = useState(defaultPreset as Preset);
+  const [preset, setPreset] = useState({
+    backgroundColor: [0, 0, 0, 0],
+    operations: [
+      {
+        samplerConfig: {
+          imageIndex: 0,
+          rasterSizeX: 1,
+          rasterSizeY: 1,
+          sampleRadius: 0,
+          conditionF: brightnessRange,
+          threshold: [0, 255],
+          samplerF: basicSample,
+          samplerFFreq: [1, 1],
+        },
+        renderer: pixelRenderer,
+        rendererConfig: {
+          blendMode: 'normal',
+          colorConfig: {
+            colorF: rgb,
+            inputColor: [0, 0, 0, 0],
+          },
+          shapeF: pixelRects,
+          transformConfig: undefined,
 
-  function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    let file: File;
-    if (event.target.files != null) {
-      file = event.target.files[0];
-      setConfig((prevState) => ({
-        ...prevState,
-        images: [URL.createObjectURL(file) as string, prevState.images[1]],
-      }));
-    } else {
-      return;
-    } // No file was selected
+          channels: [true, false, false, false],
+          patternConfig: undefined,
+          metaballConfig: undefined,
+        },
+      },
+    ],
+  } as Preset);
 
-    // Create a new FileReader instance
-    /*   const reader = new FileReader();
+  // Create a new FileReader instance
+  /*   const reader = new FileReader();
 
     // Define the callback function for the FileReader's onload event
     reader.onload = (e) => {
@@ -42,58 +63,34 @@ function App() {
     // Read the contents of the file as a Data URL
     reader.readAsDataURL(file);
     */
-  }
-
-  const handlePresetUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = (e: ProgressEvent<FileReader>) => {
-      if (typeof e.target?.result === 'string') {
-        try {
-          const loadedPreset: Preset = JSON.parse(e.target.result);
-          // Update state with the loaded preset
-          setPreset(loadedPreset);
-        } catch (error) {
-          console.error('Error parsing JSON', error);
-        }
-      }
-    };
-
-    reader.readAsText(file);
-  };
 
   return (
     <>
-      <section className='src-image'>
-        <h2>{'Load an Image'}</h2>
+      <section className='files'>
+        <h3>{'Load Image'}</h3>
         <div>
-          <input type='file' accept='image/*' onChange={handleImageUpload} />
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => handleImageUpload(e, setConfig)}
+          />
         </div>
         <div className='display'>
           {config.images[0] && <img src={config.images[0]} />}
         </div>
-      </section>
-      <section className='preset'>
-        <h2>{'Load a Preset'}</h2>
+        <h3>{'Load Preset'}</h3>
         <div>
-          <input type='file' accept='.json' onChange={handlePresetUpload} />
-        </div>
-        <div className='display'>
-          {/* {preset && <p>{JSON.stringify(preset)}</p>} */}
-          <SettingsForm
-            preset={preset}
-            setPreset={setPreset}
-            //formHandlers={formHandlers}
-            //handleNewLayer={() => handleNewLayer(defaultPreset, setPreset)}
-            //handleDeleteLayer={(e) => handleDeleteLayer(e, setPreset)}
-            //handleNumberInput={()}
+          <input
+            type='file'
+            accept='.json'
+            onChange={(e) => handlePresetUpload(e, setPreset)}
           />
         </div>
+        <h3>{'Save Preset'}</h3>
+        <button type='button' onClick={()=>handleDownload(preset)}>Download</button>
+      </section>
+      <section className='preset'>
+        <SettingsForm preset={preset} setPreset={setPreset} />
       </section>
       <section className='output-image'>
         <Sketch config={config} preset={preset} />

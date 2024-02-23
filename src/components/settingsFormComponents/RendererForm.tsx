@@ -13,7 +13,6 @@ import {
   handleSelect,
   handleToggle,
 } from '../../handlers/formHandlers';
-import set from 'lodash.set';
 
 export default function RendererForm({
   lib,
@@ -41,24 +40,6 @@ export default function RendererForm({
     }
   }
 
-  /*
-  function handleRendererSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    e.preventDefault();
-    setPreset((prevState) => {
-      const renderer = () => {
-        if (lib) {
-          for (const rendererF of lib.renderers) {
-            if (rendererF.name === e.target.value) return rendererF;
-          }
-        }
-        return pixelRenderer
-      };
-      const stateCopy = { ...prevState };
-      stateCopy.operations[index].renderer = renderer();
-      return stateCopy;
-    });
-  }
-*/
   return (
     lib && (
       <fieldset>

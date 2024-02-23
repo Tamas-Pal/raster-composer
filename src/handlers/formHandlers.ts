@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from 'react';
 import {
   ColorFunction,
   ConditionFunction,
+  Config,
+  Operation,
   PatternConfig,
   PatternFunction,
   Preset,
@@ -13,14 +15,71 @@ import {
 import set from 'lodash.set';
 import { Renderer } from 'p5';
 
+// File Operation Handlers
+
+export function handleImageUpload(
+  event: React.ChangeEvent<HTMLInputElement>,
+  setConfig: Dispatch<SetStateAction<Config>>
+) {
+  let file: File;
+  if (event.target.files != null) {
+    file = event.target.files[0];
+    setConfig((prevState) => ({
+      ...prevState,
+      images: [URL.createObjectURL(file) as string, prevState.images[1]],
+    }));
+  } else {
+    return;
+  }
+}
+
+export function handlePresetUpload(
+  event: React.ChangeEvent<HTMLInputElement>,
+  setPreset: Dispatch<SetStateAction<Preset>>
+): void {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    if (typeof e.target?.result === 'string') {
+      try {
+        const loadedPreset: Preset = JSON.parse(e.target.result);
+        // Update state with the loaded preset
+        setPreset(loadedPreset);
+      } catch (error) {
+        console.error('Error parsing JSON', error);
+      }
+    }
+  };
+  reader.readAsText(file);
+}
+
+export function handleDownload(preset: Preset) {
+  const jsonString = JSON.stringify(preset);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.download = `preset.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Layer Operation Handlers
+
 export function handleNewLayer(
-  defaultPreset: Preset,
+  defaultOperation: Operation,
   setPreset: Dispatch<SetStateAction<Preset>>
 ) {
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
-    stateCopy.operations.push(defaultPreset.operations[0]);
-    console.log(stateCopy);
+    stateCopy.operations.push(defaultOperation);
+    //console.log(stateCopy);
     return stateCopy;
   });
 }
@@ -41,6 +100,28 @@ export function handleDeleteLayer(
   });
 }
 
+export function handleMoveLayer(
+  direction: number,
+  index: number,
+  setPreset: Dispatch<SetStateAction<Preset>>
+) {
+  const insertIndex = index + 1 * direction;
+  setPreset((prevState) => {
+    const stateCopy = { ...prevState };
+    const toInsert = stateCopy.operations.splice(index, 1);
+    stateCopy.operations.splice(insertIndex, 0, toInsert[0]);
+    //console.log(index, insertIndex, stateCopy);
+
+    return stateCopy;
+  });
+}
+
+// Input and Submit Handlers
+
+export function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+}
+
 export function handleNumberInput(
   e: React.FormEvent<HTMLInputElement>,
   path: string,
@@ -49,6 +130,7 @@ export function handleNumberInput(
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
     set(stateCopy, path, Number((e.target as HTMLInputElement).value));
+
     return stateCopy;
   });
 }
@@ -83,10 +165,12 @@ export function handleToggle(
   setPreset: Dispatch<SetStateAction<Preset>>
 ) {
   e.preventDefault;
-  const unchecked = typeof defaultValue === "boolean" ? false : undefined
+  const unchecked = typeof defaultValue === 'boolean' ? false : undefined;
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
-    e.target.checked ? set(stateCopy, path, defaultValue) : set(stateCopy, path, unchecked)
+    e.target.checked
+      ? set(stateCopy, path, defaultValue)
+      : set(stateCopy, path, unchecked);
     return stateCopy;
   });
 }

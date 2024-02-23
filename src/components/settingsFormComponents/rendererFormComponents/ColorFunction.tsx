@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Lib } from '../../../utils/loadLib';
 import { Preset, RendererConfig } from '../../../p5/types';
 import { LibList, LibListItem, handleNumberInput, handleSelect } from '../../../handlers/formHandlers';

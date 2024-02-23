@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Operation, Preset } from '../p5/types';
 import { loadLib, Lib } from '../utils/loadLib';
 import SamplerForm from './settingsFormComponents/SamplerForm';
@@ -6,21 +6,22 @@ import RendererForm from './settingsFormComponents/RendererForm';
 import {
   handleNewLayer,
   handleDeleteLayer,
-  handleNumberInput,
+  onSubmit,
+  handleMoveLayer,
 } from '../handlers/formHandlers';
-import { preset as defaultPreset } from '../p5/configs/config-default';
+import brightnessRange from '../p5/lib/attributeFunctions/conditionFunctions/brightnessRange';
+import basicSample from '../p5/lib/attributeFunctions/samplerFunctions/basicSample';
+import rgb from '../p5/lib/attributeFunctions/colorFunctions/rgb';
+import pixelRenderer from '../p5/lib/renderers/pixelRenderer';
+import pixelRects from '../p5/lib/attributeFunctions/shapeFunctions/pixelRects';
+import BackgroundColor from './settingsFormComponents/BackgroundColor';
 
 export function SettingsForm({
   preset,
   setPreset,
-}: //  formHandlers,
-{
+}: {
   preset: Preset;
   setPreset: Dispatch<SetStateAction<Preset>>;
-  // formHandlers: {
-  //   handleNewLayer: React.MouseEventHandler;
-  //   handleDeleteLayer: React.MouseEventHandler;
-  // };
 }) {
   const [lib, setLib] = useState(null as Lib);
   useEffect(() => {
@@ -31,16 +32,12 @@ export function SettingsForm({
     importLib();
   }, []);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
   const formOperations = preset.operations.map(
     (operation: Operation, index: number) => {
       console.log('preset', preset);
 
       return (
-        <Fragment key={index}>
+        <div key={index} className={`operation`}>
           <h3>{`Layer_${index + 1}`}</h3>
           <button
             type='button'
@@ -49,6 +46,25 @@ export function SettingsForm({
           >
             X
           </button>
+          {index > 0 && (
+            <button
+              type='button'
+              id={`move-layer-up-${index}`}
+              onClick={() => handleMoveLayer(-1, index, setPreset)}
+            >
+              ↑
+            </button>
+          )}
+          {index < preset.operations.length - 1 && (
+            <button
+              type='button'
+              id={`move-layer--down--${index}`}
+              onClick={() => handleMoveLayer(1, index, setPreset)}
+            >
+              ↓
+            </button>
+          )}
+
           <SamplerForm
             lib={lib}
             samplerConfig={operation.samplerConfig}
@@ -62,7 +78,7 @@ export function SettingsForm({
             setPreset={setPreset}
             index={index}
           />
-        </Fragment>
+        </div>
       );
     }
   );
@@ -72,70 +88,44 @@ export function SettingsForm({
       <h2>Settings</h2>
       {lib ? (
         <form id='form' onSubmit={onSubmit}>
-          <label>
-            <h4>Background Color</h4>
-            <span className='field-label'>R</span>
-            <input
-              className='number-input'
-              type='number'
-              name='background-r'
-              id='background-r'
-              min='0'
-              max='255'
-              required
-              onChange={(e) =>
-                handleNumberInput(e, 'backgroundColor[0]', setPreset)
-              }
-              value={preset.backgroundColor[0]}
-            />
-            <span className='field-label'>G</span>
-            <input
-              className='number-input'
-              type='number'
-              name='background-g'
-              id='background-g'
-              min='0'
-              max='255'
-              required
-              onChange={(e) =>
-                handleNumberInput(e, 'backgroundColor[1]', setPreset)
-              }
-              value={preset.backgroundColor[1]}
-            />
-            <span className='field-label'>B</span>
-            <input
-              className='number-input'
-              type='number'
-              name='background-b'
-              id='background-b'
-              min='0'
-              max='255'
-              required
-              onChange={(e) =>
-                handleNumberInput(e, 'backgroundColor[2]', setPreset)
-              }
-              value={preset.backgroundColor[2]}
-            />
-            <span className='field-label'>A</span>
-            <input
-              className='number-input'
-              type='number'
-              name='background-a'
-              id='background-a'
-              min='0'
-              max='255'
-              required
-              onChange={(e) =>
-                handleNumberInput(e, 'backgroundColor[3]', setPreset)
-              }
-              value={preset.backgroundColor[3]}
-            />
-          </label>
+          <BackgroundColor preset={preset} setPreset={setPreset} />
           {formOperations}
 
           <button
             type='button'
-            onClick={() => handleNewLayer(defaultPreset, setPreset)}
+            onClick={() =>
+              handleNewLayer(
+                // add default operation deep copy
+                {
+                  samplerConfig: {
+                    imageIndex: 0,
+                    rasterSizeX: 1,
+                    rasterSizeY: 1,
+                    sampleRadius: 0,
+                    conditionF: brightnessRange,
+                    threshold: [0, 255],
+                    samplerF: basicSample,
+                    samplerFFreq: [1, 1],
+                  },
+                  renderer: pixelRenderer,
+                  rendererConfig: {
+                    blendMode: 'normal',
+                    colorConfig: {
+                      colorF: rgb,
+                      inputColor: [0, 0, 0, 0],
+                    },
+                    shapeF: pixelRects,
+                    transformConfig: undefined,
+
+                    channels: [true, false, false, false],
+                    patternConfig: undefined,
+                    metaballConfig: undefined,
+                  },
+                },
+                // state setter
+                setPreset
+              )
+            }
           >
             Add Layer
           </button>
