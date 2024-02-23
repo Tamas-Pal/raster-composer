@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { formHandlers } from './handlers/formHandlers';
 import './App.css';
 import { Config, Preset } from './p5/types';
 import {
@@ -12,8 +11,6 @@ import { SettingsForm } from './components/SettingsForm';
 function App() {
   const [config, setConfig] = useState(defaultConfig as Config);
   const [preset, setPreset] = useState(defaultPreset as Preset);
-const {handleNewLayer, handleDeleteLayer} = formHandlers;
-  
 
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     let file: File;
@@ -90,8 +87,11 @@ const {handleNewLayer, handleDeleteLayer} = formHandlers;
           {/* {preset && <p>{JSON.stringify(preset)}</p>} */}
           <SettingsForm
             preset={preset}
-            handleNewLayer={() => handleNewLayer(defaultPreset, setPreset)}
-            handleDeleteLayer={(e) => handleDeleteLayer(e, setPreset)}
+            setPreset={setPreset}
+            //formHandlers={formHandlers}
+            //handleNewLayer={() => handleNewLayer(defaultPreset, setPreset)}
+            //handleDeleteLayer={(e) => handleDeleteLayer(e, setPreset)}
+            //handleNumberInput={()}
           />
         </div>
       </section>

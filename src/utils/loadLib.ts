@@ -52,8 +52,6 @@ export async function loadLib() {
   );
   const rendererModules = import.meta.glob('../p5/lib/renderers/*.ts');
 
-  //console.log(modules);
-
   const lib: Lib = {
     attributeFunctions: {
       colorFunctions: [],

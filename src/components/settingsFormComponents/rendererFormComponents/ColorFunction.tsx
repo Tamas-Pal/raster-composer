@@ -1,32 +1,48 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Lib } from '../../../utils/loadLib';
+import { Preset, RendererConfig } from '../../../p5/types';
+import { LibList, LibListItem, handleNumberInput, handleSelect } from '../../../handlers/formHandlers';
+import rgb from '../../../p5/lib/attributeFunctions/colorFunctions/rgb';
 
-export default function ColorFunction({ lib }: { lib: Lib }) {
-  const [hasInputColor, setHasInputColor] = useState(false);
+export default function ColorFunction({
+  lib,
+  colorConfig,
+  setPreset,
+  index
+}: {
+  lib: Lib;
+  colorConfig: RendererConfig['colorConfig'];
+  setPreset: Dispatch<SetStateAction<Preset>>;
+  index: number;
+}) {
 
-  function handleColorFSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    e.preventDefault();
-    e.currentTarget.value === 'channelToSaturation' ||
-    e.currentTarget.value === 'singleColor'
-      ? setHasInputColor(true)
-      : setHasInputColor(false);
-  }
+  const pathStub=`operations[${index}].rendererConfig.colorConfig`
+
+
 
   return (
-    <label>
+    lib && (<label>
       <h4>Color Function</h4>
       Function
       <select
         name='colorF'
         id='colorF'
-        defaultValue='rgb'
-        onChange={handleColorFSelect}
+        onChange={(e) =>
+          handleSelect(
+            e,
+            `operations[${index}].rendererConfig.colorConfig.colorF`,
+            lib.attributeFunctions.colorFunctions as LibList,
+            rgb as LibListItem,
+            setPreset
+          )
+        }
+        value={colorConfig.colorF.name}
       >
         <option key='rgb' value='rgb'>
           {'rgb'}
         </option>
 
-        {lib ? (
+        {
           lib.attributeFunctions.colorFunctions.map((colorF) => {
             if (colorF.name !== 'rgb') {
               return (
@@ -36,11 +52,11 @@ export default function ColorFunction({ lib }: { lib: Lib }) {
               );
             }
           })
-        ) : (
-          <option>Data is being fetched...</option>
-        )}
+        }
       </select>
-      {hasInputColor && (
+      {['channelToSaturation', 'singleColor'].includes(
+              colorConfig.colorF.name
+            ) && (
         <div>
           Input Color
           <span className='field-label'>R</span>
@@ -51,7 +67,10 @@ export default function ColorFunction({ lib }: { lib: Lib }) {
             id='input-color-r'
             min='0'
             max='255'
-            defaultValue='255'
+            onChange={(e) =>
+              handleNumberInput(e, `${pathStub}.inputColor[0]`, setPreset)
+            }
+            value={colorConfig.inputColor ? colorConfig.inputColor[0] : 0}
             required
           />
           <span className='field-label'>G</span>
@@ -62,7 +81,10 @@ export default function ColorFunction({ lib }: { lib: Lib }) {
             id='input-color-g'
             min='0'
             max='255'
-            defaultValue='0'
+            onChange={(e) =>
+              handleNumberInput(e, `${pathStub}.inputColor[1]`, setPreset)
+            }
+            value={colorConfig.inputColor ? colorConfig.inputColor[1] : 0}
             required
           />
           <span className='field-label'>B</span>
@@ -73,7 +95,10 @@ export default function ColorFunction({ lib }: { lib: Lib }) {
             id='input-color-b'
             min='0'
             max='255'
-            defaultValue='0'
+            onChange={(e) =>
+              handleNumberInput(e, `${pathStub}.inputColor[2]`, setPreset)
+            }
+            value={colorConfig.inputColor ? colorConfig.inputColor[2] : 0}
             required
           />
           <span className='field-label'>A</span>
@@ -84,11 +109,14 @@ export default function ColorFunction({ lib }: { lib: Lib }) {
             id='input-color-a'
             min='0'
             max='255'
-            defaultValue='255'
+            onChange={(e) =>
+              handleNumberInput(e, `${pathStub}.inputColor[3]`, setPreset)
+            }
+            value={colorConfig.inputColor ? colorConfig.inputColor[3] : 0}
             required
           />
         </div>
       )}
-    </label>
+    </label>)
   );
 }

@@ -1,5 +1,4 @@
 import p5, { Image } from 'p5';
-//import sketch from '../p5/sketch';
 import { useEffect, useRef } from 'react';
 import { Config, Preset } from '../p5/types';
 import composer from '../p5/composer';

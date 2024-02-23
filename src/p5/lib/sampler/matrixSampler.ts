@@ -22,11 +22,14 @@ export default function matrixSampler(
     pixels: [] as Pixels,
   };
 
+  const matrixSize = sampleRadius * 2 + 1;
+  let outputColor = [0, 0, 0, 0] as BufferColor;
+  let divider = 0;
   for (let y = 0; y < resolutionY; y += rasterSizeY) {
     for (let x = 0; x < resolutionX; x += rasterSizeX) {
       // define matrix for given radius to find average intensity for each color channel
-      const matrixSize = sampleRadius * 2 + 1;
-      let outputColor = [0, 0, 0, 0] as BufferColor;
+      divider = 0;
+      outputColor = [0, 0, 0, 0];
       for (
         let matrixX = 0 - sampleRadius;
         matrixX < matrixSize - sampleRadius;
@@ -37,19 +40,20 @@ export default function matrixSampler(
           matrixY < matrixSize - sampleRadius;
           matrixY++
         ) {
-          // if pixel is not on image edge
+          // if pixel is not out of bounds
           if (
             x + matrixX >= 0 &&
             y + matrixY >= 0 &&
             x + matrixX < resolutionX &&
             y + matrixY < resolutionY
           ) {
+            divider += 1;
             // find pixel's RGBA in pixels array for each matrix point
             const index = samplerF({
               resolutionX: resolutionX,
               resolutionY: resolutionY,
-              x: x,
-              y: y,
+              x: x + matrixX,
+              y: y + matrixY,
               samplerFFreq: samplerFFreq,
             });
             const pixel = pixels.slice(index, index + 4);
@@ -60,18 +64,15 @@ export default function matrixSampler(
 
             // if pixel is on image edge return full intensity
             // and no alpha
-          } else {
-            outputColor = outputColor.map((channel, index) =>
-              index < 3 ? channel + 1 : channel
-            ) as BufferColor;
           }
         }
       }
 
-      // divide the channel color with matrix size
-      outputColor = outputColor.map(
-        (channel) => channel / (matrixSize * matrixSize)
+      // divide the channel color with number of added values
+      outputColor = outputColor.map((channel) =>
+        Math.round(channel / divider)
       ) as BufferColor;
+
       if (conditionF(outputColor, threshold)) {
         buffer.pixels.push([x, y, ...outputColor]);
       }

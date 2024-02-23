@@ -135,7 +135,7 @@ export type RendererConfig = {
   colorConfig: { colorF: ColorFunction; inputColor?: number[] };
   shapeF: ShapeFunction;
   transformConfig?: TransformConfig;
-  channels?: boolean[];
+  channels: boolean[];
   patternConfig?: PatternConfig;
   metaballConfig?: MetaballConfig;
 };
