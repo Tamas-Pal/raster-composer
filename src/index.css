@@ -1,11 +1,26 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@font-face {
+  font-family: 'Main';
+  src: url('/SpaceGrotesk-Variable.ttf');
+  font-weight: thin;
+  font-style: normal;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
+:root {
+  font-family: 'Main', monospace, system-ui, sans-serif;
+  line-height: 1.0;
+  font-weight: 300;
+
+  box-sizing: border-box;
+
+  --bg-color: rgb(15,15,7);
+  --bgbox-color: rgb(127,127,127);
+  --highlight-color: rgb(31,31,15);
+  --fg-color: rgb(239,239,239);
+
+  color-scheme: dark;
+  color: var(--fg-color);
+  background-color: var(--bg-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,57 +28,178 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+img {
+  width: 100%;
+  object-fit: contain;
 }
 
-body {
+#root {
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  display: grid;
+  /*
+  grid-template-areas: 
+  "files output output"
+  "files output output"
+  "preset preset preset"
+  ;*/
+  width: calc(100vw-18px);
+  max-width: 1536px;
+  padding: 18px;
+  grid-template-columns: 360px 3fr;
+  grid-template-rows: 1fr 1fr;
+  place-items: start;
+  gap: 18px;
+  row-gap: 36px;
+
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: .25rem;
+  margin:0;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+h2 {
+  padding: 2px;
+  font-size: 2.0rem;
+  font-weight: 400;
+  letter-spacing: .375rem;
+  margin-top: -12px;
+
+}
+
+h3 {
+  font-weight: 400;
+}
+
+h4 {
+  margin-top: 8px;
+  margin-bottom: 6px;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  background-color: var(--bgbox-color);
+  border: 1px solid var(--fg-color);
+  border-style:  solid;
+  padding: 4px 6px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+input, select {
+  background-color: var(--highlight-color);
+  border: none;
+  padding: 2px;
+  /* padding-left: 6px; */
+  text-align: right;
+}
+.input-file {
+  background-color: var(--bgbox-color);
+   border: 1px solid var(--fg-color);
+  border-style:  solid;
+  /* border: none; */
+  background-color: var(--highlight-color);
+}
+
+input::file-selector-button {
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--fg-color);
+  padding: 4px 6px;
+  margin: -2px;
+  margin-right: 6px;
+}
+
+.files {
+  grid-column: 1;
+  grid-row: 1;
+  width:310px;
+}
+.output-image {
+  grid-column: 2;
+  grid-row:1;
+  place-self: center;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(192, 192, 192);
+  border-style:  solid;
+}
+.preset {
+  /* grid-area: preset; */
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row: 2;
+}
+
+form {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0px;
+  width: 328px
+}
+
+#update {
+  position: absolute;
+  left:-1px;
+  top:-1px;
+}
+
+.operation, .main-settings {
+  padding: 6px;
+  padding-top: 0px;
+}
+
+.layer-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.layer-button {
+  position: relative;
+  margin-left: 2px;
+  padding: 6px 12px;
+  border: none;
+  background-color: var(--highlight-color);
+  font-size: 0.75rem;
+}
+
+.layer-button:hover {
+  background-color: var(--bg-color);
+}
+
+.arrow-button {
+  padding: 6px 10px;
+
+}
+
+.arrow {  
+  position: relative;
+  display: inline-block;
+  top: -2px;
+}
+
+.add-layer {
+  /* align-self: stretch; */
+  margin: 18px 0px;
+  /* width: 100%;
+  height: 36px */
+}
+
+.number-input {
+  margin-right: 12px;
+  max-width: 3rem;
 }

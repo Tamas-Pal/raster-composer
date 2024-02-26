@@ -6,15 +6,17 @@ import composer from '../p5/composer';
 export default function Sketch({
   config,
   preset,
+  triggerUpdate
 }: {
   config: Config;
   preset: Preset;
+  triggerUpdate: () => void;
 }) {
   const containerRef = useRef(null!);
 
   let img0: Image;
   let img1: Image;
-  const outputWidth = 1024
+  const outputWidth = preset.outputWidth;
 
   const outputImage = (p: p5) => {
     if (config.images[0]) {
@@ -29,7 +31,7 @@ export default function Sketch({
         config.resolutionX = outputWidth;
         //config.resolutionY = img0.height * config.outputMultiplier;
         config.resolutionY = outputWidth / aspectRatio;
-        const imgGFXArray = []
+        const imgGFXArray = [];
 
         p.createCanvas(config.resolutionX, config.resolutionY);
         p.pixelDensity(1);
@@ -43,16 +45,17 @@ export default function Sketch({
         img0GFX.pixelDensity(1);
         img0GFX.image(img0, 0, 0, p.width, p.height);
         img0GFX.loadPixels();
-        imgGFXArray.push(img0GFX.pixels)
+        imgGFXArray.push(img0GFX.pixels);
         const img1GFX = p.createGraphics(
           config.resolutionX,
           config.resolutionY
         );
         img1GFX.pixelDensity(1);
-        if (config.images[1]) {img1GFX.image(img1, 0, 0, p.width, p.height);
-        //p.image(img0, 0, 0, p.width, p.height);
-        img1GFX.loadPixels();
-        imgGFXArray.push(img1GFX.pixels)
+        if (config.images[1]) {
+          img1GFX.image(img1, 0, 0, p.width, p.height);
+          //p.image(img0, 0, 0, p.width, p.height);
+          img1GFX.loadPixels();
+          imgGFXArray.push(img1GFX.pixels);
         }
         composer(p, config, preset, imgGFXArray);
       };
@@ -60,6 +63,9 @@ export default function Sketch({
       p.keyPressed = () => {
         if (p.keyCode === 83) {
           p.saveCanvas(`rasterComposition.png`);
+        }
+        if (p.keyCode === 85) {
+          triggerUpdate()
         }
       };
     }

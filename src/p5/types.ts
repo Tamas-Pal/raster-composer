@@ -155,11 +155,13 @@ export type Renderer = (
 // Operation types
 
 export type Operation = {
+  layerName: string;
   samplerConfig: SamplerConfig;
   renderer: Renderer;
   rendererConfig: RendererConfig;
 };
 export type Preset = {
+  outputWidth: number;
   backgroundColor: number[];
   operations: Operation[];
 };

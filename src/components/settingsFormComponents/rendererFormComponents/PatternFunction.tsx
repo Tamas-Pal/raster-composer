@@ -26,22 +26,6 @@ export default function PatternFunction({
 
   const pathStub = `operations[${index}].rendererConfig.patternConfig`;
 
-  /*
-  function handleToggle() {
-    setPreset((prevState) => {
-      const stateCopy = { ...prevState };
-      stateCopy.operations[index].rendererConfig.patternConfig = {
-        patternF: checkerboardPattern,
-        patternResolutionXY: [1, 1],
-        patternColor: {
-          patternColorF: rgb,
-          inputColor: [0, 0, 0, 0],
-        },
-      };
-      return stateCopy;
-    });
-  }
-*/
   return (
     lib && (
       <label>
@@ -60,7 +44,7 @@ export default function PatternFunction({
                   patternResolutionXY: [1, 1],
                   patternColor: {
                     patternColorF: rgb,
-                    inputColor: [0, 0, 0, 0],
+                    inputColor: [255, 0, 0, 255],
                   },
                 },
                 setPreset

@@ -23,21 +23,6 @@ export default function TransformFunction({
 }) {
   const pathStub = `operations[${index}].rendererConfig.transformConfig`;
 
-  /*
-  function handleToggle() {
-    setPreset((prevState) => {
-      const stateCopy = { ...prevState };
-      stateCopy.operations[index].rendererConfig.transformConfig =
-        stateCopy.operations[index].rendererConfig.transformConfig === undefined
-          ? {
-              transformF: translateRandom,
-              transformScaleXY: [0, 0],
-            }
-          : undefined;
-      return stateCopy;
-    });
-  }
-*/
   return (
     lib && (
       <label>

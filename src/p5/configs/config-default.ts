@@ -11,10 +11,8 @@ import pixelRects from '../lib/attributeFunctions/shapeFunctions/pixelRects';
 import rgb from '../lib/attributeFunctions/colorFunctions/rgb';
 
 export const defaultConfig: Config = {
-  images: [
-    '',
-  ],
-  outputMultiplier: 1,
+  images: [''],
+  outputMultiplier: 0.5,
   resolutionX: 0,
   resolutionY: 0,
   outputGridUnitX: 0,
@@ -22,9 +20,11 @@ export const defaultConfig: Config = {
 };
 
 export const defaultPreset = {
+  outputWidth: 512,
   backgroundColor: [0, 0, 0, 0],
   operations: [
     {
+      layerName: `Layer_0`,
       samplerConfig: {
         imageIndex: 0,
         rasterSizeX: 1,
@@ -40,7 +40,7 @@ export const defaultPreset = {
         blendMode: 'normal',
         colorConfig: {
           colorF: rgb,
-          inputColor: [0, 0, 0, 0],
+          inputColor: [255, 0, 0, 255],
         },
         shapeF: pixelRects,
         transformConfig: undefined,

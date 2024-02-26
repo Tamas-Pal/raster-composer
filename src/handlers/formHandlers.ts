@@ -3,10 +3,13 @@ import {
   ColorFunction,
   ConditionFunction,
   Config,
+  MetaballConfig,
   Operation,
   PatternConfig,
   PatternFunction,
   Preset,
+  RendererConfig,
+  SamplerConfig,
   SamplerFunction,
   ShapeFunction,
   TransformConfig,
@@ -14,6 +17,70 @@ import {
 } from '../p5/types';
 import set from 'lodash.set';
 import { Renderer } from 'p5';
+import cloneDeep from 'lodash.clonedeep';
+import { Lib } from '../utils/loadLib';
+
+// Library import types
+
+export type LibListItem =
+  | ConditionFunction
+  | ColorFunction
+  | PatternFunction
+  | SamplerFunction
+  | ShapeFunction
+  | TransformFunction
+  | Renderer
+  | PatternConfig
+  | TransformConfig
+  | boolean
+  | string
+  | string[];
+  
+    export type LibListFunction =
+    | ConditionFunction
+    | ColorFunction
+    | PatternFunction
+    | SamplerFunction
+    | ShapeFunction
+    | TransformFunction
+    | Renderer;
+
+export type LibList =
+  | ConditionFunction[]
+  | ColorFunction[]
+  | PatternFunction[]
+  | SamplerFunction[]
+  | ShapeFunction[]
+  | TransformFunction[]
+  | Renderer[]
+  | string[];
+
+
+// recursive lookup type
+
+type PresetPart = {
+  [key: string]:
+    | number[]
+    | Operation[]
+    | Operation
+    | RendererConfig
+    | SamplerConfig
+    | number
+    | string
+    | ConditionFunction
+    | ColorFunction
+    | PatternFunction
+    | SamplerFunction
+    | ShapeFunction
+    | TransformFunction
+    | Renderer
+    | PatternConfig
+    | TransformConfig
+    | MetaballConfig
+    | boolean[]
+    | boolean
+    | undefined;
+};
 
 // File Operation Handlers
 
@@ -35,6 +102,7 @@ export function handleImageUpload(
 
 export function handlePresetUpload(
   event: React.ChangeEvent<HTMLInputElement>,
+  lib: Lib,
   setPreset: Dispatch<SetStateAction<Preset>>
 ): void {
   const file = event.target.files?.[0];
@@ -43,10 +111,64 @@ export function handlePresetUpload(
   const reader = new FileReader();
 
   reader.onload = (e: ProgressEvent<FileReader>) => {
+    function findInLib(
+      lib: // never,
+      Lib | LibList,
+      functionName: string
+    ) {
+      let result = undefined;
+      for (const key in lib) {
+        if (
+          typeof lib[key as keyof typeof lib] === 'function' &&
+          lib[key as keyof typeof lib]['name'] === functionName
+        ) {
+          result = lib[key as keyof typeof lib];
+          break;
+        } else if (typeof lib[key as keyof typeof lib] === 'object') {
+          // Recursive call for nested objects
+          const nestedResult = findInLib(
+            lib[key as keyof typeof lib],
+            functionName
+          ) as LibListFunction;
+          if (nestedResult !== undefined) {
+            result = nestedResult;
+            break;
+          }
+        }
+      }
+      return result;
+    }
+
+    function stringsToFunctions(thing: PresetPart) {
+      if (typeof thing === 'object') {
+        for (const key in thing) {
+          if (
+            typeof thing[key as keyof typeof thing] === 'string' &&
+            (thing[key as keyof typeof thing] as string).split('-')[0] === 'f'
+          ) {
+            const libResult = findInLib(
+              lib,
+              (thing[key as keyof typeof thing] as string).split('-')[1]
+            );
+            if (libResult !== undefined)
+              thing[key as keyof typeof thing] = libResult;
+          } else if (
+            typeof thing[key as keyof typeof thing] === 'object' &&
+            thing[key as keyof typeof thing] !== null
+          ) {
+            stringsToFunctions(thing[key as keyof typeof thing] as PresetPart);
+          }
+        }
+      }
+    }
+
     if (typeof e.target?.result === 'string') {
       try {
         const loadedPreset: Preset = JSON.parse(e.target.result);
+        stringsToFunctions(loadedPreset);
+        console.log(loadedPreset);
         // Update state with the loaded preset
+
         setPreset(loadedPreset);
       } catch (error) {
         console.error('Error parsing JSON', error);
@@ -56,8 +178,25 @@ export function handlePresetUpload(
   reader.readAsText(file);
 }
 
-export function handleDownload(preset: Preset) {
-  const jsonString = JSON.stringify(preset);
+export function handlePresetDownload(preset: Preset) {
+  const presetCopy = cloneDeep(preset);
+
+  function functionsToStrings(thing: PresetPart) {
+    for (const key in thing) {
+      if (
+        typeof thing[key] === 'function' &&
+        thing !== undefined &&
+        thing[key] !== undefined
+      ) {
+        thing[key] = `f-${(thing[key] as PresetPart).name}`;
+      } else if (typeof thing[key] === 'object' && thing[key] !== null) {
+        functionsToStrings(thing[key] as PresetPart);
+      }
+    }
+  }
+  functionsToStrings(presetCopy);
+
+  const jsonString = JSON.stringify(presetCopy);
   const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
@@ -79,7 +218,6 @@ export function handleNewLayer(
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
     stateCopy.operations.push(defaultOperation);
-    //console.log(stateCopy);
     return stateCopy;
   });
 }
@@ -135,29 +273,6 @@ export function handleNumberInput(
   });
 }
 
-export type LibListItem =
-  | ConditionFunction
-  | ColorFunction
-  | PatternFunction
-  | SamplerFunction
-  | ShapeFunction
-  | TransformFunction
-  | Renderer
-  | PatternConfig
-  | TransformConfig
-  | boolean
-  | string[];
-
-export type LibList =
-  | ConditionFunction[]
-  | ColorFunction[]
-  | PatternFunction[]
-  | SamplerFunction[]
-  | ShapeFunction[]
-  | TransformFunction[]
-  | Renderer[]
-  | string[];
-
 export function handleToggle(
   e: React.ChangeEvent<HTMLInputElement>,
   path: string,
@@ -201,10 +316,3 @@ export function handleSelect(
     return stateCopy;
   });
 }
-/*
-export const formHandlers = {
-  handleNewLayer,
-  handleDeleteLayer,
-  handleNumberInput,
-};
-*/
