@@ -22,10 +22,8 @@ export default function rasterDots(p: p5, shapeParams: ShapeParams) {
 
   p.ellipse(
     pixel[0] * outputGridUnitX +
-      //  (outputGridUnitX * rasterSizeX) / 2 +
       transformF(p, outputGridUnitX * transformScaleXY[0]),
     pixel[1] * outputGridUnitY +
-      // (outputGridUnitX * rasterSizeY) / 2 +
       transformF(p, outputGridUnitX * transformScaleXY[1]),
     outputGridUnitX * rasterSizeX * (1 - pixel[pixelIndex] / 255),
     outputGridUnitX * rasterSizeY * (1 - pixel[pixelIndex] / 255)

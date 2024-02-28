@@ -51,7 +51,6 @@ export default function Sketch({
         img1GFX.pixelDensity(1);
         if (config.images[1]) {
           img1GFX.image(img1, 0, 0, p.width, p.height);
-          //p.image(img0, 0, 0, p.width, p.height);
           img1GFX.loadPixels();
           imgGFXArray.push(img1GFX.pixels);
         }

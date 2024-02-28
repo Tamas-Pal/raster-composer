@@ -112,11 +112,7 @@ export function handlePresetUpload(
   const reader = new FileReader();
 
   reader.onload = (e: ProgressEvent<FileReader>) => {
-    function findInLib(
-      lib: // never,
-      Lib | LibList,
-      functionName: string
-    ) {
+    function findInLib(lib: Lib | LibList, functionName: string) {
       let result = undefined;
       for (const key in lib) {
         if (
@@ -249,8 +245,6 @@ export function handleMoveLayer(
     const stateCopy = { ...prevState };
     const toInsert = stateCopy.operations.splice(index, 1);
     stateCopy.operations.splice(insertIndex, 0, toInsert[0]);
-    //console.log(index, insertIndex, stateCopy);
-
     return stateCopy;
   });
 }

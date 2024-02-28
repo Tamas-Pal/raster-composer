@@ -37,7 +37,6 @@ export default function metaballRenderer(
       blendModeParam = p.BLEND;
   }
   p.blendMode(blendModeParam);
-  //p.strokeWeight(4);
   const metaballRasterSizeX =
     metaballConfig.metaballRasterSizeXY[0] * outputGridUnitX;
   const metaballRasterSizeY =
@@ -80,9 +79,7 @@ export default function metaballRenderer(
       }
     }
   }
-  //console.log('distanceBounds', distanceBounds);
   if (distanceBounds[0] && distanceBounds[1]) {
-    //p.blendMode(p.BLEND);
     p.noStroke();
     for (let j = 0; j < evaluatedPixels.length; j++) {
       for (let i = 0; i < channels.length; i++) {

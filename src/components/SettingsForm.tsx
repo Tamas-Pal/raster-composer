@@ -27,7 +27,6 @@ export function SettingsForm({
 }) {
   const formOperations = preset.operations.map(
     (operation: Operation, index: number) => {
-      console.log('preset', preset);
 
       return (
         <div key={index} className={`operation`}>
