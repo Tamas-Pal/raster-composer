@@ -6,7 +6,6 @@ import RendererForm from './settingsFormComponents/RendererForm';
 import {
   handleNewLayer,
   handleDeleteLayer,
-  onSubmit,
   handleMoveLayer,
 } from '../handlers/formHandlers';
 import brightnessRange from '../p5/lib/attributeFunctions/conditionFunctions/brightnessRange';
@@ -85,7 +84,7 @@ export function SettingsForm({
   return (
     <>
       {lib ? (
-        <form id='form' onSubmit={onSubmit}>
+        <form id='form'>
           <div className='main-wrapper'>
             <div className='main-settings'>
               <div className='main-settings-title'>

@@ -25,7 +25,7 @@ export default function TransformFunction({
 
   return (
     lib && (
-      <label>
+      <>
         <h4>
           <input
             type='checkbox'
@@ -47,75 +47,79 @@ export default function TransformFunction({
           />
           Transform Function
         </h4>
-        {transformConfig !== undefined && (
-          <>
-            <div className='flex-line'>
-              <span className='field-title'>Function</span>
-              <select
-                name='transformf'
-                id='transformf'
-                onChange={(e) =>
-                  handleSelect(
-                    e,
-                    `operations[${index}].rendererConfig.transformConfig.transformF`,
-                    lib.attributeFunctions.transformFunctions as LibList,
-                    translateRandom as LibListItem,
-                    setPreset
-                  )
-                }
-                value={transformConfig.transformF.name}
-              >
-                {lib.attributeFunctions.transformFunctions.map((transformF) => {
-                  return (
-                    <option key={transformF.name} value={transformF.name}>
-                      {transformF.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className='flex-line'>
-              <span className='field-title'>Scale</span>{' '}
-              <span className='field-label'>X</span>
-              <input
-                className='number-input'
-                type='number'
-                name='transform-scale-0'
-                id='transform-scale-0'
-                onChange={(e) =>
-                  handleNumberInput(
-                    e,
-                    `${pathStub}.transformScaleXY[0]`,
-                    setPreset
-                  )
-                }
-                value={
-                  transformConfig ? transformConfig.transformScaleXY[0] : 0
-                }
-                required
-              />
-              <span className='field-label'>Y</span>
-              <input
-                className='number-input'
-                type='number'
-                name='transform-scale-1'
-                id='transform-scale-1'
-                onChange={(e) =>
-                  handleNumberInput(
-                    e,
-                    `${pathStub}.transformScaleXY[1]`,
-                    setPreset
-                  )
-                }
-                value={
-                  transformConfig ? transformConfig.transformScaleXY[1] : 0
-                }
-                required
-              />
-            </div>
-          </>
-        )}
-      </label>
+        <label>
+          {transformConfig !== undefined && (
+            <>
+              <div className='flex-line'>
+                <span className='field-title'>Function</span>
+                <select
+                  name='transformf'
+                  id='transformf'
+                  onChange={(e) =>
+                    handleSelect(
+                      e,
+                      `operations[${index}].rendererConfig.transformConfig.transformF`,
+                      lib.attributeFunctions.transformFunctions as LibList,
+                      translateRandom as LibListItem,
+                      setPreset
+                    )
+                  }
+                  value={transformConfig.transformF.name}
+                >
+                  {lib.attributeFunctions.transformFunctions.map(
+                    (transformF) => {
+                      return (
+                        <option key={transformF.name} value={transformF.name}>
+                          {transformF.name}
+                        </option>
+                      );
+                    }
+                  )}
+                </select>
+              </div>
+              <div className='flex-line'>
+                <span className='field-title'>Scale</span>{' '}
+                <span className='field-label'>X</span>
+                <input
+                  className='number-input'
+                  type='number'
+                  name='transform-scale-0'
+                  id='transform-scale-0'
+                  onChange={(e) =>
+                    handleNumberInput(
+                      e,
+                      `${pathStub}.transformScaleXY[0]`,
+                      setPreset
+                    )
+                  }
+                  value={
+                    transformConfig ? transformConfig.transformScaleXY[0] : 0
+                  }
+                  required
+                />
+                <span className='field-label'>Y</span>
+                <input
+                  className='number-input'
+                  type='number'
+                  name='transform-scale-1'
+                  id='transform-scale-1'
+                  onChange={(e) =>
+                    handleNumberInput(
+                      e,
+                      `${pathStub}.transformScaleXY[1]`,
+                      setPreset
+                    )
+                  }
+                  value={
+                    transformConfig ? transformConfig.transformScaleXY[1] : 0
+                  }
+                  required
+                />
+              </div>
+            </>
+          )}
+        </label>
+      </>
     )
   );
 }

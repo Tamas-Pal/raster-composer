@@ -251,19 +251,16 @@ export function handleMoveLayer(
 
 // Input and Submit Handlers
 
-export function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-}
-
 export function handleNumberInput(
   e: React.FormEvent<HTMLInputElement>,
   path: string,
   setPreset: Dispatch<SetStateAction<Preset>>
 ) {
+  e.preventDefault;
+  e.stopPropagation()
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
     set(stateCopy, path, Number((e.target as HTMLInputElement).value));
-
     return stateCopy;
   });
 }
@@ -275,6 +272,8 @@ export function handleToggle(
   setPreset: Dispatch<SetStateAction<Preset>>
 ) {
   e.preventDefault;
+  console.log(e);
+  
   const unchecked = typeof defaultValue === 'boolean' ? false : undefined;
   setPreset((prevState) => {
     const stateCopy = { ...prevState };
@@ -293,6 +292,7 @@ export function handleSelect(
   setPreset: Dispatch<SetStateAction<Preset>>
 ) {
   e.preventDefault();
+  e.stopPropagation()
   setPreset((prevState) => {
     const getFromLib = () => {
       if (libList) {
