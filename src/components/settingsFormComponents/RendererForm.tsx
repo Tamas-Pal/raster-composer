@@ -47,36 +47,39 @@ export default function RendererForm({
           <h3>Renderer</h3>
         </legend>
         <label>
-          Renderer
-          <select
-            name='renderer'
-            id='renderer'
-            onChange={(e) => {
-              initMetaball(e)
-              handleSelect(
-                e,
-                `operations[${index}].renderer`,
-                lib.renderers as LibList,
-                pixelRenderer as LibListItem,
-                setPreset
-              );
-            }}
-            value={renderer.name}
-          >
-            <option key='pixelRenderer' value='pixelRenderer'>
-              {'pixelRenderer'}
-            </option>
-            {lib.renderers.map((renderer) => {
-              if (renderer.name !== 'pixelRenderer') {
-                return (
-                  <option key={renderer.name} value={renderer.name}>
-                    {renderer.name}
-                  </option>
+          <div className='flex-line'>
+            <span className='field-title'>Renderer</span>
+            <select
+              name='renderer'
+              id='renderer'
+              onChange={(e) => {
+                initMetaball(e);
+                handleSelect(
+                  e,
+                  `operations[${index}].renderer`,
+                  lib.renderers as LibList,
+                  pixelRenderer as LibListItem,
+                  setPreset
                 );
-              }
-            })}
-          </select>
-          Blend Mode
+              }}
+              value={renderer.name}
+            >
+              <option key='pixelRenderer' value='pixelRenderer'>
+                {'pixelRenderer'}
+              </option>
+              {lib.renderers.map((renderer) => {
+                if (renderer.name !== 'pixelRenderer') {
+                  return (
+                    <option key={renderer.name} value={renderer.name}>
+                      {renderer.name}
+                    </option>
+                  );
+                }
+              })}
+            </select>
+          </div>
+          <div className='flex-line'>
+          <span className='field-title'>Blend Mode</span>
           <select
             name='blend-mode'
             id='blend-mode'
@@ -96,8 +99,9 @@ export default function RendererForm({
             <option value='multiply'>multiply</option>
             <option value='difference'>difference</option>
           </select>
-          <div>
-            Channels
+          </div>
+          <div className='flex-line'>
+          <span className='field-title'>Channels</span>
             <span className='field-label'>R</span>
             <input
               className='checkbox-input'

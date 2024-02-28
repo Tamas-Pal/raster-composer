@@ -23,7 +23,8 @@ export default function ShapeFunction({
     lib && (
       <label>
         <h4>Shape Function</h4>
-        Function
+        <div className="flex-line">
+        <span className='field-title'>Function</span>
         <select
           name='shapef'
           id='shapef'
@@ -51,6 +52,7 @@ export default function ShapeFunction({
             }
           })}
         </select>
+        </div>
       </label>
     )
   );

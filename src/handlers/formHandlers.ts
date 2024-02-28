@@ -35,15 +35,15 @@ export type LibListItem =
   | boolean
   | string
   | string[];
-  
-    export type LibListFunction =
-    | ConditionFunction
-    | ColorFunction
-    | PatternFunction
-    | SamplerFunction
-    | ShapeFunction
-    | TransformFunction
-    | Renderer;
+
+export type LibListFunction =
+  | ConditionFunction
+  | ColorFunction
+  | PatternFunction
+  | SamplerFunction
+  | ShapeFunction
+  | TransformFunction
+  | Renderer;
 
 export type LibList =
   | ConditionFunction[]
@@ -54,7 +54,6 @@ export type LibList =
   | TransformFunction[]
   | Renderer[]
   | string[];
-
 
 // recursive lookup type
 
@@ -91,10 +90,12 @@ export function handleImageUpload(
   let file: File;
   if (event.target.files != null) {
     file = event.target.files[0];
-    setConfig((prevState) => ({
-      ...prevState,
-      images: [URL.createObjectURL(file) as string, prevState.images[1]],
-    }));
+    if (file) {
+      setConfig((prevState) => ({
+        ...prevState,
+        images: [URL.createObjectURL(file) as string, prevState.images[1]],
+      }));
+    }
   } else {
     return;
   }
@@ -162,14 +163,14 @@ export function handlePresetUpload(
       }
     }
 
+    // Update state with the loaded preset
     if (typeof e.target?.result === 'string') {
       try {
         const loadedPreset: Preset = JSON.parse(e.target.result);
-        stringsToFunctions(loadedPreset);
-        console.log(loadedPreset);
-        // Update state with the loaded preset
-
-        setPreset(loadedPreset);
+        if (loadedPreset) {
+          stringsToFunctions(loadedPreset);
+          setPreset(loadedPreset);
+        }
       } catch (error) {
         console.error('Error parsing JSON', error);
       }

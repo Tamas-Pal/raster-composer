@@ -100,8 +100,8 @@ export default function metaballRenderer(
             evaluatedPixels[j][0],
             evaluatedPixels[j][1],
             mappedDistance,
-            0,
-            0,
+            mappedDistance,
+            mappedDistance,
             255,
           ] as Pixel;
 

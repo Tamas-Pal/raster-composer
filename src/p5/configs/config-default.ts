@@ -12,7 +12,6 @@ import rgb from '../lib/attributeFunctions/colorFunctions/rgb';
 
 export const defaultConfig: Config = {
   images: [''],
-  outputMultiplier: 0.5,
   resolutionX: 0,
   resolutionY: 0,
   outputGridUnitX: 0,

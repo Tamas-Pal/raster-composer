@@ -97,9 +97,9 @@ function App() {
   }
   return (
     <>
-      <section className='files'>
+      <section id='files' className='files'>
         <h1>raster-composer</h1>
-        <h3>{'Load Image'}</h3>
+        <h4>{'Load Image'}</h4>
         <div>
           <input
             className='input-file'
@@ -108,10 +108,18 @@ function App() {
             onChange={(e) => handleImageUpload(e, setConfig)}
           />
         </div>
+
         <div className='display'>
-          {config.images[0] && <img src={config.images[0]} />}
+          {config.images[0] && (
+            <img
+              className='src-image'
+              alt='source image'
+              src={config.images[0]}
+            />
+          )}
         </div>
-        <h3>{'Load Preset'}</h3>
+
+        <h4>{'Load Preset'}</h4>
         <div>
           <input
             className='input-file'
@@ -120,10 +128,28 @@ function App() {
             onChange={(e) => handlePresetUpload(e, lib, setPreset)}
           />
         </div>
-        <h3>{'Save Preset'}</h3>
-        <button type='button' onClick={() => handlePresetDownload(preset)}>
-          Download
-        </button>
+
+        <div className='files-flex-line'>
+          <h4>{'Save Preset'}</h4>
+          <button
+            className='download'
+            type='button'
+            onClick={() => handlePresetDownload(preset)}
+          >
+            Download
+          </button>
+        </div>
+
+        <div id='save-output' className='files-flex-line'>
+          <h4>Save Image</h4>
+          {!config.images[0] && <button
+            className='download'
+            type='button'
+            style={{fontWeight:'600', letterSpacing:'0.05rem', color: 'var(--bg-color)'}}
+          >
+            Load Source Image First!
+          </button>}
+        </div>
       </section>
       <section className='output-image'>
         <button

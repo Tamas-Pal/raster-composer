@@ -26,7 +26,8 @@ export default function ColorFunction({
     lib && (
       <label>
         <h4>Color Function</h4>
-        Function
+        <div className="flex-line">
+        <span className='field-title'>Function</span>
         <select
           name='colorF'
           id='colorF'
@@ -55,11 +56,12 @@ export default function ColorFunction({
             }
           })}
         </select>
+        </div>
         {['channelToSaturation', 'singleColor'].includes(
           colorConfig.colorF.name
         ) && (
-          <div>
-            Input Color
+          <div className='flex-line'>
+            <span className='field-title'>Input Color</span>
             <span className='field-label'>R</span>
             <input
               className='number-input'

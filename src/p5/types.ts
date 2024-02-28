@@ -4,7 +4,6 @@ import p5 from 'p5';
 
 export type Config = {
   images: string[];
-  outputMultiplier: number;
   resolutionX: number;
   resolutionY: number;
   outputGridUnitX: number;

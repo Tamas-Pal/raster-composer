@@ -11,11 +11,10 @@ export default function MainSettings({
 }) {
   return (
     <fieldset>
-      <legend>
-        <h3>Main Settings</h3>
-      </legend>
       <label>
-        <h4>Output Width</h4>
+        <div className='flex-line'>
+        <span className='field-title'>Output Width</span>
+
         <input
           className='number-input'
           type='number'
@@ -26,9 +25,11 @@ export default function MainSettings({
           onChange={(e) => handleNumberInput(e, 'outputWidth', setPreset)}
           value={preset.outputWidth}
         />
+        </div>
       </label>
       <label>
         <h4>Background Color</h4>
+        <div className='flex-line'>
         <span className='field-label'>R</span>
         <input
           className='number-input'
@@ -85,6 +86,7 @@ export default function MainSettings({
           }
           value={preset.backgroundColor[3]}
         />
+        </div>
       </label>
       
     </fieldset>

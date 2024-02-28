@@ -5,18 +5,16 @@
   font-style: normal;
 }
 
-
 :root {
   font-family: 'Main', monospace, system-ui, sans-serif;
-  line-height: 1.0;
+  line-height: 1;
   font-weight: 300;
 
-  box-sizing: border-box;
-
-  --bg-color: rgb(15,15,7);
-  --bgbox-color: rgb(127,127,127);
-  --highlight-color: rgb(31,31,15);
-  --fg-color: rgb(239,239,239);
+  /* --bg-color: rgb(15,15,7); */
+  --bg-color: rgb(27, 23, 19);
+  --bgbox-color: rgb(111, 107, 103);
+  --hl-color: rgb(59, 55, 51);
+  --fg-color: rgb(239, 239, 239);
 
   color-scheme: dark;
   color: var(--fg-color);
@@ -28,6 +26,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+  letter-spacing: 0.067rem;
+}
 img {
   width: 100%;
   object-fit: contain;
@@ -36,105 +38,176 @@ img {
 #root {
   margin: 0;
   display: grid;
-  /*
-  grid-template-areas: 
-  "files output output"
-  "files output output"
-  "preset preset preset"
-  ;*/
   width: calc(100vw-18px);
-  max-width: 1536px;
   padding: 18px;
-  grid-template-columns: 360px 3fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 400px auto;
   place-items: start;
   gap: 18px;
-  row-gap: 36px;
-
+  row-gap: 18px;
 }
 
-h2, h3 {
+h1 {
   text-transform: uppercase;
-  letter-spacing: .25rem;
-  margin:0;
+  letter-spacing: 0.276rem;
+  margin: 0;
+  margin-top: -3px;
+  margin-bottom: 6px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+h2,
+h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+  margin: 0;
   margin-top: 8px;
   margin-bottom: 6px;
-  font-size: 1rem;
 }
 
 h2 {
   padding: 2px;
-  font-size: 2.0rem;
-  font-weight: 400;
-  letter-spacing: .375rem;
-  margin-top: -12px;
-
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.375rem;
+  margin: -6px 0 12px 0;
 }
 
 h3 {
+  font-size: 1rem;
   font-weight: 400;
 }
 
 h4 {
   margin-top: 8px;
   margin-bottom: 6px;
+  font-weight: 600;
 }
 
 button {
   background-color: var(--bgbox-color);
   border: 1px solid var(--fg-color);
-  border-style:  solid;
+  border-style: solid;
   padding: 4px 6px;
 }
 
-input, select {
-  background-color: var(--highlight-color);
+input,
+select {
+  background-color: var(--hl-color);
   border: none;
   padding: 2px;
-  /* padding-left: 6px; */
   text-align: right;
+  margin: 0 6px 0 0px;
 }
+
+select:active,
+select:focus,
+select:hover {
+  border: none;
+  outline: none;
+}
+
+option {
+  background-color: var(--hl-color);
+}
+option:checked {
+  background-color: var(--fg-color);
+  color: var(--bg-color);  
+}
+
+input[type='checkbox'] {
+  all: unset;
+  width: 12px;
+  height: 12px;
+  margin-right: 12px;
+  background-color: var(--hl-color);
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--fg-color);
+}
+
 .input-file {
-  background-color: var(--bgbox-color);
-   border: 1px solid var(--fg-color);
-  border-style:  solid;
-  /* border: none; */
-  background-color: var(--highlight-color);
+  border: none;
+  border: 1px solid var(--fg-color);
+  background-color: var(--hl-color);
+  margin-bottom: 6px;
+  box-shadow: 0 0 6px var(--hl-color);
+  width: 100%;
+  color: var(--fg-color);
 }
 
 input::file-selector-button {
-  border-radius: 0;
-  border: none;
+  background-color: var(--bg-color);
+  border: unset;
   border-right: 1px solid var(--fg-color);
   padding: 4px 6px;
   margin: -2px;
   margin-right: 6px;
 }
 
+.files-flex-line {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+  margin-block: 6px;
+}
+
 .files {
   grid-column: 1;
   grid-row: 1;
-  width:310px;
+  width: 100%;
+  display: flex;
+  margin-bottom: -6px;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
 .output-image {
   grid-column: 2;
-  grid-row:1;
-  place-self: center;
+  grid-row: 1;
+  place-self: start;
   display: flex;
   place-content: center;
   align-items: center;
   gap: 18px;
   position: relative;
-  width: 100%;
   height: 100%;
-  border: 1px solid rgb(192, 192, 192);
-  border-style:  solid;
+  padding: 12px;
+  border: 1px solid var(--fg-color);
+  border-style: solid;
+  box-shadow: 0 0 12px var(--hl-color);
 }
+
+#p5 {
+  position:relative;
+  min-width: 376px;
+  min-height: 18px;
+  display:flex;
+  place-content: center;
+  z-index: -1;
+}
+
+#p5_loading{
+  text-align: center;
+  left: 40%
+}
+
+#update {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+}
+
 .preset {
-  /* grid-area: preset; */
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 3;
   grid-row: 2;
+}
+
+.src-image {
+  margin-block: 12px;
 }
 
 form {
@@ -142,6 +215,7 @@ form {
   justify-content: start;
   align-items: start;
   flex-wrap: wrap;
+  gap: 18px;
 }
 
 fieldset {
@@ -149,23 +223,38 @@ fieldset {
   flex-direction: column;
   gap: 6px;
   margin: 0px;
-  width: 328px
+  padding: 12px;
+  border: none;
+  border-top: 1px solid var(--fg-color);
 }
 
-#update {
-  position: absolute;
-  left:-1px;
-  top:-1px;
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
-.operation, .main-settings {
-  padding: 6px;
-  padding-top: 0px;
+.operation,
+.main-settings {
+  width: 400px;
+  padding: 0px;
+  border: 1px solid var(--fg-color);
+  box-shadow: 0 0 12px var(--hl-color);
+}
+
+.main-settings-title {
+  margin: 17px 9px 16px 12px;
+}
+
+.main-spacer {
+  width: 100%;
+  height: 5px;
+  border-top: 1px solid var(--fg-color);
 }
 
 .layer-title {
   display: flex;
   justify-content: space-between;
+  margin: 9px 9px 0px 12px;
 }
 
 .layer-button {
@@ -173,7 +262,7 @@ fieldset {
   margin-left: 2px;
   padding: 6px 12px;
   border: none;
-  background-color: var(--highlight-color);
+  background-color: var(--hl-color);
   font-size: 0.75rem;
 }
 
@@ -183,23 +272,45 @@ fieldset {
 
 .arrow-button {
   padding: 6px 10px;
-
 }
 
-.arrow {  
+.arrow {
   position: relative;
   display: inline-block;
   top: -2px;
 }
 
 .add-layer {
-  /* align-self: stretch; */
   margin: 18px 0px;
-  /* width: 100%;
-  height: 36px */
+}
+
+.add-layer,
+.download {
+  box-shadow: 0 0 12px var(--hl-color);
+  place-self: end;
 }
 
 .number-input {
-  margin-right: 12px;
   max-width: 3rem;
+}
+
+.field-title {
+  margin-right: 6px;
+  flex-shrink: 2;
+  text-align: right;
+  /* width: min-content; */
+}
+
+.label {
+  text-transform: uppercase;
+}
+
+.flex-line {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 9px;
+  margin-block: 6px;
+  border-left: 1px solid var(--fg-color);
 }

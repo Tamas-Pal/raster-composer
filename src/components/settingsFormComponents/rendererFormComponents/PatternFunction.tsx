@@ -23,7 +23,6 @@ export default function PatternFunction({
   setPreset: Dispatch<SetStateAction<Preset>>;
   index: number;
 }) {
-
   const pathStub = `operations[${index}].rendererConfig.patternConfig`;
 
   return (
@@ -56,66 +55,70 @@ export default function PatternFunction({
         </h4>
         {patternConfig !== undefined && (
           <>
-            Function
-            <select
-              name='patternf'
-              id='patternf'
-              onChange={(e) =>
-                handleSelect(
-                  e,
-                  `operations[${index}].rendererConfig.patternConfig.patternF`,
-                  lib.attributeFunctions.patternFunctions as LibList,
-                  crossPattern as LibListItem,
-                  setPreset
-                )
-              }
-              value={patternConfig.patternF.name}
-            >
-              {lib.attributeFunctions.patternFunctions.map((patternF) => {
-                return (
-                  <option key={patternF.name} value={patternF.name}>
-                    {patternF.name}
-                  </option>
-                );
-              })}
-            </select>
-            Resolution
-            <span className='field-label'>X</span>
-            <input
-              className='number-input'
-              type='number'
-              name='pattern-resolution-0'
-              id='pattern-resolution-0'
-              min='1'
-              onChange={(e) =>
-                handleNumberInput(
-                  e,
-                  `${pathStub}.patternResolutionXY[0]`,
-                  setPreset
-                )
-              }
-              value={patternConfig ? patternConfig.patternResolutionXY[0] : 1}
-              required
-            />
-            <span className='field-label'>Y</span>
-            <input
-              className='number-input'
-              type='number'
-              name='pattern-resolution-1'
-              id='pattern-resolution-1'
-              min='1'
-              onChange={(e) =>
-                handleNumberInput(
-                  e,
-                  `${pathStub}.patternResolutionXY[1]`,
-                  setPreset
-                )
-              }
-              value={patternConfig ? patternConfig.patternResolutionXY[1] : 1}
-              required
-            />
-            <div>
-              Color Function
+            <div className='flex-line'>
+              <span className='field-title'>Function</span>
+              <select
+                name='patternf'
+                id='patternf'
+                onChange={(e) =>
+                  handleSelect(
+                    e,
+                    `operations[${index}].rendererConfig.patternConfig.patternF`,
+                    lib.attributeFunctions.patternFunctions as LibList,
+                    crossPattern as LibListItem,
+                    setPreset
+                  )
+                }
+                value={patternConfig.patternF.name}
+              >
+                {lib.attributeFunctions.patternFunctions.map((patternF) => {
+                  return (
+                    <option key={patternF.name} value={patternF.name}>
+                      {patternF.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className='flex-line'>
+              <span className='field-title'>Resolution</span>
+              <span className='field-label'>X</span>
+              <input
+                className='number-input'
+                type='number'
+                name='pattern-resolution-0'
+                id='pattern-resolution-0'
+                min='1'
+                onChange={(e) =>
+                  handleNumberInput(
+                    e,
+                    `${pathStub}.patternResolutionXY[0]`,
+                    setPreset
+                  )
+                }
+                value={patternConfig ? patternConfig.patternResolutionXY[0] : 1}
+                required
+              />
+              <span className='field-label'>Y</span>
+              <input
+                className='number-input'
+                type='number'
+                name='pattern-resolution-1'
+                id='pattern-resolution-1'
+                min='1'
+                onChange={(e) =>
+                  handleNumberInput(
+                    e,
+                    `${pathStub}.patternResolutionXY[1]`,
+                    setPreset
+                  )
+                }
+                value={patternConfig ? patternConfig.patternResolutionXY[1] : 1}
+                required
+              />
+            </div>
+            <div className='flex-line'>
+              <span className='field-title'>Color Function</span>
               <select
                 name='pattern-colorF'
                 id='pattern-colorF'
@@ -151,8 +154,8 @@ export default function PatternFunction({
             {['channelToSaturation', 'singleColor'].includes(
               patternConfig.patternColor.patternColorF.name
             ) && (
-              <div>
-                Input Color
+              <div className='flex-line'>
+                <span className='field-title'>Input Color</span>
                 <span className='field-label'>R</span>
                 <input
                   className='number-input'

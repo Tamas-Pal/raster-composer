@@ -41,7 +41,7 @@ export function SettingsForm({
                   id={`move-layer-up-${index}`}
                   onClick={() => handleMoveLayer(-1, index, setPreset)}
                 >
-                <span className='arrow'>←</span>
+                  <span className='arrow'>←</span>
                 </button>
               )}
               {index < preset.operations.length - 1 && (
@@ -51,7 +51,7 @@ export function SettingsForm({
                   id={`move-layer--down--${index}`}
                   onClick={() => handleMoveLayer(1, index, setPreset)}
                 >
-                 <span className='arrow'>→</span>
+                  <span className='arrow'>→</span>
                 </button>
               )}
               <button
@@ -87,9 +87,14 @@ export function SettingsForm({
     <>
       {lib ? (
         <form id='form' onSubmit={onSubmit}>
-          <div className='main-settings'>
-            <h2>Settings</h2>
-            <MainSettings preset={preset} setPreset={setPreset} />
+          <div className='main-wrapper'>
+            <div className='main-settings'>
+              <div className='main-settings-title'>
+                <h3>Main Settings</h3>
+              </div>
+              <div className="main-spacer"></div>
+              <MainSettings preset={preset} setPreset={setPreset} />
+            </div>
             <button
               type='button'
               className='add-layer'

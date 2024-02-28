@@ -6,7 +6,7 @@ import composer from '../p5/composer';
 export default function Sketch({
   config,
   preset,
-  triggerUpdate
+  triggerUpdate,
 }: {
   config: Config;
   preset: Preset;
@@ -27,9 +27,7 @@ export default function Sketch({
 
       p.setup = () => {
         const aspectRatio = img0.width / img0.height;
-        //config.resolutionX = img0.width * config.outputMultiplier;
         config.resolutionX = outputWidth;
-        //config.resolutionY = img0.height * config.outputMultiplier;
         config.resolutionY = outputWidth / aspectRatio;
         const imgGFXArray = [];
 
@@ -57,15 +55,22 @@ export default function Sketch({
           img1GFX.loadPixels();
           imgGFXArray.push(img1GFX.pixels);
         }
+
         composer(p, config, preset, imgGFXArray);
+        const downloadButton = p.createButton('Download');
+        downloadButton.parent('save-output');
+        downloadButton.mousePressed(() => {
+          p.saveCanvas(`rasterComposition.png`);
+        });
       };
+
 
       p.keyPressed = () => {
         if (p.keyCode === 83) {
           p.saveCanvas(`rasterComposition.png`);
         }
         if (p.keyCode === 85) {
-          triggerUpdate()
+          triggerUpdate();
         }
       };
     }

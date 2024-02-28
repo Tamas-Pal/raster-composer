@@ -28,15 +28,16 @@ export default function SamplerForm({
         <legend>
           <h3>Sampler</h3>
         </legend>
-        <div>
-          Raster Size <span className='field-label'>X</span>
+        <label>
+        <div className='flex-line'>
+          <span className='field-title'>Raster Size</span>{' '}
+          <span className='field-label'>X</span>
           <input
             className='number-input'
             type='number'
             name='raster-size-0'
             id='raster-size-0'
             min='1'
-            //max='255' TODO
             required
             onChange={(e) =>
               handleNumberInput(e, `${pathStub}.rasterSizeX`, setPreset)
@@ -50,7 +51,6 @@ export default function SamplerForm({
             name='raster-size-1'
             id='raster-size-1'
             min='1'
-            //max='255' TODO
             required
             onChange={(e) =>
               handleNumberInput(e, `${pathStub}.rasterSizeY`, setPreset)
@@ -58,15 +58,14 @@ export default function SamplerForm({
             value={samplerConfig.rasterSizeY}
           />
         </div>
-        <div>
-          Sample Radius
+        <div className='flex-line'>
+          <span className='field-title'>Sample Radius</span>
           <input
             className='number-input'
             type='number'
             name='raster-size-0'
             id='raster-size-0'
             min='0'
-            //max='255' TODO
             required
             onChange={(e) =>
               handleNumberInput(e, `${pathStub}.sampleRadius`, setPreset)
@@ -74,38 +73,42 @@ export default function SamplerForm({
             value={samplerConfig.sampleRadius}
           />
         </div>
+        </label>
         <label>
           <h4>Condition Function</h4>
-          Function
-          <select
-            name='conditionf'
-            id='conditionf'
-            onChange={(e) =>
-              handleSelect(
-                e,
-                `operations[${index}].samplerConfig.conditionF`,
-                lib!.attributeFunctions.conditionFunctions as LibList,
-                brightnessRange as LibListItem,
-                setPreset
-              )
-            }
-            value={samplerConfig.conditionF.name}
-          >
-            <option key='brightnessRange' value='brightnessRange'>
-              {'brightnessRange'}
-            </option>
-            {lib.attributeFunctions.conditionFunctions.map((conditionF) => {
-              if (conditionF.name !== 'brightnessRange') {
-                return (
-                  <option key={conditionF.name} value={conditionF.name}>
-                    {conditionF.name}
-                  </option>
-                );
+          <div className='flex-line'>
+            <span className='field-title'>{'Function '}</span>
+            <select
+              name='conditionf'
+              id='conditionf'
+              onChange={(e) =>
+                handleSelect(
+                  e,
+                  `operations[${index}].samplerConfig.conditionF`,
+                  lib!.attributeFunctions.conditionFunctions as LibList,
+                  brightnessRange as LibListItem,
+                  setPreset
+                )
               }
-            })}
-          </select>
-          <div>
-            Threshold
+              value={samplerConfig.conditionF.name}
+            >
+              <option key='brightnessRange' value='brightnessRange'>
+                {'brightnessRange'}
+              </option>
+              {lib.attributeFunctions.conditionFunctions.map((conditionF) => {
+                if (conditionF.name !== 'brightnessRange') {
+                  return (
+                    <option key={conditionF.name} value={conditionF.name}>
+                      {conditionF.name}
+                    </option>
+                  );
+                }
+              })}
+            </select>
+          </div>
+          <div className='flex-line'>
+            <span className='field-title'>Threshold</span>
+            <span className='field-label'>Low</span>
             <input
               className='number-input'
               type='number'
@@ -119,6 +122,8 @@ export default function SamplerForm({
               }
               value={samplerConfig.threshold[0]}
             />
+            <span className='field-label'>High</span>
+
             <input
               className='number-input'
               type='number'
@@ -135,8 +140,9 @@ export default function SamplerForm({
           </div>
         </label>
         <label>
-          <h3>Sampler Function</h3>
-          Function
+          <h4>Sampler Function</h4>
+          <div className="flex-line">
+          <span className='field-title'>Function</span>
           <select
             name='samplerf'
             id='samplerf'
@@ -155,15 +161,18 @@ export default function SamplerForm({
               {'basicSample'}
             </option>
             {lib.attributeFunctions.samplerFunctions.map((samplerF) => {
-              return (
+                             if (samplerF.name !== 'basicSample') {
+
+             return (
                 <option key={samplerF.name} value={samplerF.name}>
                   {samplerF.name}
                 </option>
               );
-            })}
+ } })}
           </select>
-          <div>
-            Sampler Frequency <span className='field-label'>X</span>
+          </div>
+          <div className='flex-line'>
+          <span className='field-title'>Sampler Frequency</span> <span className='field-label'>X</span>
             <input
               className='number-input'
               type='number'
