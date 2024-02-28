@@ -22,6 +22,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "savedPresets/config00.ts",
+    "savedPresets/config01.ts",
+    "savedPresets/config02.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
