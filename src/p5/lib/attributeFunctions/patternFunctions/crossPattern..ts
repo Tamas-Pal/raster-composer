@@ -12,10 +12,10 @@ export default function crossPattern(p: p5, patternParams: PatternParams) {
     patternResolutionXY = [1, 1],
     patternColor: { patternColorF, inputColor },
   } = patternParams;
-  const x1 = pixel[0] - (outputGridUnitX * rasterSizeX) / 2;
-  const y1 = pixel[1] - (outputGridUnitY * rasterSizeY) / 2;
-  const x2 = pixel[0] + (outputGridUnitX * rasterSizeX) / 2;
-  const y2 = pixel[1] + (outputGridUnitY * rasterSizeY) / 2;
+  const x1 = pixel![0] - (outputGridUnitX * rasterSizeX) / 2;
+  const y1 = pixel![1] - (outputGridUnitY * rasterSizeY) / 2;
+  const x2 = pixel![0] + (outputGridUnitX * rasterSizeX) / 2;
+  const y2 = pixel![1] + (outputGridUnitY * rasterSizeY) / 2;
   p.blendMode(p.BLEND);
   p.stroke(
     p.color(patternColorF({ pixel, pixelIndex: channelIndex, inputColor }))

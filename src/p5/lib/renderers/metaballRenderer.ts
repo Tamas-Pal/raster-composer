@@ -11,7 +11,7 @@ export default function metaballRenderer(
     colorConfig,
     shapeF,
     transformConfig = undefined,
-    channels = [true, false, false, false],
+    passes = [true, false, false, false],
     patternConfig = undefined,
     metaballConfig = {
       metaballRasterSizeXY: [4, 4],
@@ -45,19 +45,23 @@ export default function metaballRenderer(
     undefined,
     undefined,
   ];
+  // Iterate through rasters and evaluate average distance. 
+  // If it is within range, convert it to 0-255 value to pass to colorF
   const evaluatedPixels: [number, number, number][] = [];
   for (let y = 0; y < buffer.resolutionY; y += metaballRasterSizeY) {
     for (let x = 0; x < buffer.resolutionX; x += metaballRasterSizeX) {
       const maxDistance = p.dist(0, 0, buffer.resolutionX, buffer.resolutionY);
       const evaluationDistance =
-        maxDistance * (metaballConfig.evaluationDistanceRatio / 10);
+      maxDistance * (metaballConfig.evaluationDistanceRatio / 10);
       let evaluationCount = 0;
       let distanceSum = 0;
       for (let i = 0; i < buffer.pixels.length; i++) {
-        const distance = p.dist(buffer.pixels[i][0], buffer.pixels[i][1], x, y);
-        if (distance < evaluationDistance) {
-          evaluationCount += 1;
-          distanceSum += distance;
+        if (buffer.pixels[i]) {
+          const distance = p.dist(buffer.pixels[i]![0], buffer.pixels[i]![1], x, y);
+          if (distance < evaluationDistance) {
+            evaluationCount += 1;
+            distanceSum += distance;
+          }
         }
       }
 
@@ -82,8 +86,8 @@ export default function metaballRenderer(
   if (distanceBounds[0] && distanceBounds[1]) {
     p.noStroke();
     for (let j = 0; j < evaluatedPixels.length; j++) {
-      for (let i = 0; i < channels.length; i++) {
-        if (channels[i]) {
+      for (let i = 0; i < passes.length; i++) {
+        if (passes[i]) {
           const mappedDistance = Math.floor(
             p.map(
               evaluatedPixels[j][2],

@@ -1,18 +1,13 @@
 import { ColorParams } from '../../../types';
 
 export default function channelToSaturation(colorParams: ColorParams) {
-  const {
-    pixel = [0, 0, 255, 0, 0, 255],
-    pixelIndex = 2,
-    inputColor = [255, 0, 0, 255],
-  } = colorParams;
+  const { pixel, pixelIndex = 2, inputColor = [255, 0, 0, 255] } = colorParams;
   const r = inputColor[0] / 255;
   const g = inputColor[1] / 255;
   const b = inputColor[2] / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h =
-    (max + min) / 2;
+  let h = (max + min) / 2;
   const l = (max + min) / 2;
 
   if (max === min) {
@@ -33,6 +28,6 @@ export default function channelToSaturation(colorParams: ColorParams) {
     h ? (h /= 6) : (h = 0);
   }
   return `hsl(${Math.round(h * 360)}, ${Math.round(
-    pixel[pixelIndex] * 100
+    pixel![pixelIndex] * 100
   )}%, ${l * 50}%)`;
 }

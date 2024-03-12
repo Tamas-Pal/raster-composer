@@ -21,12 +21,12 @@ export default function noisePattern(
   for (let y = 0; y < patternResolutionXY[1]; y++) {
     for (let x = 0; x < patternResolutionXY[0]; x++) {
       const xPos =
-        (pixel[0] -
+        (pixel![0] -
           rasterSizeX / 2 +
           (x / patternResolutionXY[0]) * rasterSizeX) *
         outputGridUnitX;
       const yPos =
-        (pixel[1] -
+        (pixel![1] -
           rasterSizeY / 2 +
           (y / patternResolutionXY[1]) * rasterSizeY) *
         outputGridUnitY;

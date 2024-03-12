@@ -101,18 +101,18 @@ export default function RendererForm({
           </select>
           </div>
           <div className='flex-line'>
-          <span className='field-title'>Channels</span>
+          <span className='field-title'>passes</span>
             <span className='field-label'>R</span>
             <input
               className='checkbox-input'
               type='checkbox'
-              name='channels-r'
-              id='channels-r'
-              checked={rendererConfig.channels[0]}
+              name='passes-r'
+              id='passes-r'
+              checked={rendererConfig.passes[0]}
               onChange={(e) =>
                 handleToggle(
                   e,
-                  `operations[${index}].rendererConfig.channels[0]`,
+                  `operations[${index}].rendererConfig.passes[0]`,
                   true,
                   setPreset
                 )
@@ -122,13 +122,13 @@ export default function RendererForm({
             <input
               className='checkbox-input'
               type='checkbox'
-              name='channels-g'
-              id='channels-g'
-              checked={rendererConfig.channels[1]}
+              name='passes-g'
+              id='passes-g'
+              checked={rendererConfig.passes[1]}
               onChange={(e) =>
                 handleToggle(
                   e,
-                  `operations[${index}].rendererConfig.channels[1]`,
+                  `operations[${index}].rendererConfig.passes[1]`,
                   true,
                   setPreset
                 )
@@ -138,13 +138,13 @@ export default function RendererForm({
             <input
               className='checkbox-input'
               type='checkbox'
-              name='channels-b'
-              id='channels-b'
-              checked={rendererConfig.channels[2]}
+              name='passes-b'
+              id='passes-b'
+              checked={rendererConfig.passes[2]}
               onChange={(e) =>
                 handleToggle(
                   e,
-                  `operations[${index}].rendererConfig.channels[2]`,
+                  `operations[${index}].rendererConfig.passes[2]`,
                   true,
                   setPreset
                 )
@@ -154,13 +154,13 @@ export default function RendererForm({
             <input
               className='checkbox-input'
               type='checkbox'
-              name='channels-a'
-              id='channels-a'
-              checked={rendererConfig.channels[3]}
+              name='passes-a'
+              id='passes-a'
+              checked={rendererConfig.passes[3]}
               onChange={(e) =>
                 handleToggle(
                   e,
-                  `operations[${index}].rendererConfig.channels[3]`,
+                  `operations[${index}].rendererConfig.passes[3]`,
                   true,
                   setPreset
                 )

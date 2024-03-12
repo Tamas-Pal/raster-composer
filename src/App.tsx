@@ -17,6 +17,7 @@ import { Lib, loadLib } from './utils/loadLib';
 
 function App() {
   const [config, setConfig] = useState(defaultConfig as Config);
+  // State controlling form
   const [preset, setPreset] = useState({
     outputWidth: 512,
     backgroundColor: [0, 0, 0, 0],
@@ -43,13 +44,14 @@ function App() {
           shapeF: pixelRects,
           transformConfig: undefined,
 
-          channels: [true, false, false, false],
+          passes: [true, false, false, false],
           patternConfig: undefined,
           metaballConfig: undefined,
         },
       },
     ],
   } as Preset);
+  // State controlling output image
   const [imagePreset, setImagePreset] = useState({
     outputWidth: 512,
     backgroundColor: [0, 0, 0, 0],
@@ -76,7 +78,7 @@ function App() {
           shapeF: pixelRects,
           transformConfig: undefined,
 
-          channels: [true, false, false, false],
+          passes: [true, false, false, false],
           patternConfig: undefined,
           metaballConfig: undefined,
         },
@@ -98,7 +100,10 @@ function App() {
   return (
     <>
       <section id='files' className='files'>
-        <h1>raster-composer</h1>
+        <h1>
+          <div className='logo'></div>
+          raster-composer
+        </h1>
         <h4>{'Load Image'}</h4>
         <div>
           <input
@@ -142,14 +147,23 @@ function App() {
 
         <div id='save-output' className='files-flex-line'>
           <h4>Save Image</h4>
-          {!config.images[0] && <button
-            className='download'
-            type='button'
-            style={{fontWeight:'600', letterSpacing:'0.05rem', color: 'var(--bg-color)'}}
-          >
-            Load Source Image First!
-          </button>}
+          {!config.images[0] && (
+            <button
+              className='download'
+              type='button'
+              style={{
+                fontWeight: '600',
+                letterSpacing: '0.05rem',
+                color: 'var(--bg-color)',
+              }}
+            >
+              Load Source Image First!
+            </button>
+          )}
         </div>
+          <a className='guide-link' href='https://github.com/Tamas-Pal/raster-composer/blob/main/README.md' target='_blank'>
+            {`< User Guide >`}
+          </a>
       </section>
       <section className='output-image'>
         <button

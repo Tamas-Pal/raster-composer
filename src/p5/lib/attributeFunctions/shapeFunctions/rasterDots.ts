@@ -21,11 +21,11 @@ export default function rasterDots(p: p5, shapeParams: ShapeParams) {
   const { transformF, transformScaleXY } = transformConfig;
 
   p.ellipse(
-    pixel[0] * outputGridUnitX +
+    pixel![0] * outputGridUnitX +
       transformF(p, outputGridUnitX * transformScaleXY[0]),
-    pixel[1] * outputGridUnitY +
-      transformF(p, outputGridUnitX * transformScaleXY[1]),
-    outputGridUnitX * rasterSizeX * (1 - pixel[pixelIndex] / 255),
-    outputGridUnitX * rasterSizeY * (1 - pixel[pixelIndex] / 255)
+    pixel![1] * outputGridUnitY +
+      transformF(p, outputGridUnitY * transformScaleXY[1]),
+    outputGridUnitX * rasterSizeX * (1 - pixel![pixelIndex] / 255),
+    outputGridUnitY * rasterSizeY * (1 - pixel![pixelIndex] / 255)
   );
 }

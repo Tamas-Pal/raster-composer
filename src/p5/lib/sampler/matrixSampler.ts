@@ -61,9 +61,6 @@ export default function matrixSampler(
             outputColor = outputColor.map(
               (channel, index) => channel + pixel[index]
             ) as BufferColor;
-
-            // if pixel is on image edge return full intensity
-            // and no alpha
           }
         }
       }
@@ -75,6 +72,8 @@ export default function matrixSampler(
 
       if (conditionF(outputColor, threshold)) {
         buffer.pixels.push([x, y, ...outputColor]);
+      } else {
+        buffer.pixels.push(undefined)
       }
     }
   }

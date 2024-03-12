@@ -17,13 +17,13 @@ export default function pixelRects(
   const { transformF, transformScaleXY } = transformConfig;
 p.noStroke();
   p.rect(
-    pixel[0] * outputGridUnitX -
+    pixel![0] * outputGridUnitX -
       (outputGridUnitX * rasterSizeX) / 2 +
       transformF(p, outputGridUnitX * rasterSizeX * transformScaleXY[0]),
-    pixel[1] * outputGridUnitY -
-      (outputGridUnitX * rasterSizeY) / 2 +
-      transformF(p, outputGridUnitY * rasterSizeX * transformScaleXY[1]),
+    pixel![1] * outputGridUnitY -
+      (outputGridUnitY * rasterSizeY) / 2 +
+      transformF(p, outputGridUnitY * rasterSizeY * transformScaleXY[1]),
     outputGridUnitX * rasterSizeX,
-    outputGridUnitX * rasterSizeY
+    outputGridUnitY * rasterSizeY
   );
 }

@@ -21,8 +21,8 @@ export default function metaballParticles(
   }
 
   p.rect(
-    pixel[0] + transformF(p, outputGridUnitX * transformScaleXY[0]),
-    pixel[1] + transformF(p, outputGridUnitY * transformScaleXY[1]),
+    pixel![0] + transformF(p, outputGridUnitX * transformScaleXY[0]),
+    pixel![1] + transformF(p, outputGridUnitY * transformScaleXY[1]),
     metaballRasterSizeXY[0],
     metaballRasterSizeXY[1]
   );

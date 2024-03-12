@@ -121,7 +121,7 @@ export function SettingsForm({
                       shapeF: pixelRects,
                       transformConfig: undefined,
 
-                      channels: [true, false, false, false],
+                      passes: [true, false, false, false],
                       patternConfig: undefined,
                       metaballConfig: undefined,
                     },

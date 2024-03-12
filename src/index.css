@@ -46,6 +46,15 @@ img {
   row-gap: 18px;
 }
 
+.logo {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-image: url('/raster-composer_logo24x24.svg');
+  background-size: contain;
+}
+
 h1 {
   text-transform: uppercase;
   letter-spacing: 0.276rem;
@@ -160,9 +169,21 @@ input::file-selector-button {
   grid-row: 1;
   width: 100%;
   display: flex;
-  margin-bottom: -6px;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.guide-link {
+  text-decoration: none;
+  color: var(--fg-color);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.guide-link:hover {
+  width: max-content;
+  background-color: var(--fg-color);
+  color: var(--bg-color);
 }
 
 .output-image {

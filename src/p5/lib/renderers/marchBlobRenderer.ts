@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { Buffer, RendererConfig } from '../../types';
 
-export default function pixelRenderer(
+export default function marchBlobRenderer(
   p: p5,
   outputGridUnitX: number,
   outputGridUnitY: number,
@@ -34,8 +34,20 @@ export default function pixelRenderer(
   }
   p.blendMode(blendModeParam);
   p.noStroke();
-  buffer.pixels.map((pixel) => {
+  
+  buffer.pixels.map((pixel, index) => {
     if (pixel) {
+      const neighbors = [];
+      for (let y = -1; y < 2; y++) {
+        for (let x = -1; x < 2; x++) {
+          const lookupIndex = index + x + Math.round(buffer.resolutionX / buffer.rasterSizeX) * y;
+          if (x !== 0 || y !== 0) {
+            const neighbor = buffer.pixels[lookupIndex] ? true : false;
+            neighbors.push(neighbor);
+          }
+        }
+      }
+
       for (let i = 0; i < passes.length; i++) {
         if (passes[i]) {
           p.fill(
@@ -56,7 +68,7 @@ export default function pixelRenderer(
             pixelIndex: i + 2,
             transformConfig: transformConfig,
             metaballRasterSizeXY: undefined,
-            neighbors: undefined
+            neighbors: neighbors
           });
           if (patternConfig) {
             patternConfig.patternF(p, {

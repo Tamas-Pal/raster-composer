@@ -16,7 +16,7 @@ export type BufferXY = [number, number];
 export type BufferColor = [number, number, number, number];
 export type BufferXYs = BufferXY[];
 export type BufferColors = BufferColor[];
-export type Pixel = [number, number, number, number, number, number];
+export type Pixel = [number, number, number, number, number, number] | undefined;
 export type Pixels = Pixel[];
 export type Buffer = {
   resolutionY: number;
@@ -68,6 +68,7 @@ export type ShapeParams = {
   pixelIndex?: number;
   transformConfig?: TransformConfig;
   metaballRasterSizeXY?: [number, number];
+  neighbors?: boolean[];
 };
 export type ShapeFunction = (p: p5, shapeParams: ShapeParams) => void;
 //    Add raster pattern to shape
@@ -134,7 +135,7 @@ export type RendererConfig = {
   colorConfig: { colorF: ColorFunction; inputColor?: number[] };
   shapeF: ShapeFunction;
   transformConfig?: TransformConfig;
-  channels: boolean[];
+  passes: boolean[];
   patternConfig?: PatternConfig;
   metaballConfig?: MetaballConfig;
 };
